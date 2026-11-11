@@ -41,7 +41,7 @@
     const clases = ['coc-tarjeta', minutos >= MINUTOS_TARDE ? 'is-tarde' : '', nuevos.has(p.id) ? 'is-entrando' : ''].join(' ');
     const pagado = p.pago.estado === 'pagado';
     const aviso = p.estado === 'por_confirmar'
-      ? (p.origen === 'whatsapp'
+      ? (p.origen === 'whatsapp' || /^(Delivery|Recojo) · /.test(p.lugar)
         ? '<p class="coc-verificar">Pedido por WhatsApp: revisa la dirección y el pago antes de aceptar.</p>'
         : '<p class="coc-verificar">Antes de aceptar, un mozo confirma que hay personas en la mesa.</p>')
       : '';

@@ -39,7 +39,9 @@ function filaPedido(p) {
   ].filter(Boolean).join(' · ');
   return {
     lugar: `${delivery ? 'Delivery' : 'Recojo'} · ${nombre}`,
-    origen: 'whatsapp',
+    // "celular" es un origen que la tabla ya acepta sin cambios en Supabase.
+    // Cocina reconoce el pedido de WhatsApp por el lugar ("Delivery · …" / "Recojo · …").
+    origen: 'celular',
     cliente: nombre,
     items: p.items.map((i) => ({ nombre: i.nombre, variante: i.variante || '', precio: Number(i.precio) || 0, cantidad: i.cantidad })),
     notas: notas.slice(0, 600),
