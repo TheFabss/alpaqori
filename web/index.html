@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpaqori · Comida criolla en Chosica</title>
+  <meta name="description" content="Alpaqori, Tierra de Oro: comida criolla peruana en Chosica. Menú del día, sopas por día, platos de fondo y pedidos por WhatsApp.">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============ Encabezado nocturno con estado en vivo ============ -->
+<header class="topbar">
+  <div class="contenedor">
+    <a class="marca" href="index.html" aria-label="Alpaqori, inicio">
+      <div class="recorte isotipo" data-recorte="0.375,0.163,0.25,0.245"><img src="images/1.png" alt=""></div>
+      <span>ALPAQORI</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#hoy">Hoy</a>
+      <a href="#menu-dia">Menú del día</a>
+      <a href="carta.html" data-portal>Carta</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#ubicacion">Ubicación</a>
+    </nav>
+    <span class="estado" data-estado role="status"><span class="punto" aria-hidden="true"></span><span class="texto">Horario: 8:00 a. m. a 6:00 p. m.</span></span>
+    <a class="boton chico" href="carta.html" data-portal>Entrar a la carta</a>
+  </div>
+</header>
+
+<main>
+  <!-- ============ Hero: la noche en el patio ============ -->
+  <section class="hero-noche" aria-labelledby="titulo-hero">
+    <svg class="guirnalda" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false"></svg>
+
+    <!-- Buganvillas fucsias que cuelgan del techo del patio (las genera vida.js) -->
+    <svg class="buganvillas" viewBox="0 0 1440 150" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false"></svg>
+
+    <!-- Escena de fondo: el mural andino del salón (nevados, río, pradera y flores silvestres) -->
+    <div class="escena" aria-hidden="true">
+      <svg class="mural" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMax slice" focusable="false">
+        <defs>
+          <linearGradient id="cielo-mural" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2A211D" stop-opacity="0"/>
+            <stop offset=".55" stop-color="#22314A" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#1E2A3A" stop-opacity=".7"/>
+          </linearGradient>
+          <linearGradient id="oro-cordillera" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#C9A45C" stop-opacity="0"/>
+            <stop offset=".5" stop-color="#F5E1AE"/>
+            <stop offset="1" stop-color="#C9A45C" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="suelo-mural" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2A211D" stop-opacity="0"/>
+            <stop offset="1" stop-color="#2A211D" stop-opacity=".95"/>
+          </linearGradient>
+        </defs>
+        <rect width="1440" height="640" fill="url(#cielo-mural)"/>
+
+        <!-- Nevados lejanos -->
+        <g class="lejos">
+          <path fill="#3A4A63" opacity=".6" d="M0 340 L90 262 L150 300 L230 200 L300 268 L380 180 L450 250 L540 210 L620 280 L700 170 L780 240 L860 200 L940 270 L1020 190 L1100 250 L1180 210 L1260 280 L1340 220 L1440 270 L1440 640 L0 640 Z"/>
+          <g fill="#E8EEF5" opacity=".38">
+            <path d="M206 230 L230 200 L256 232 L240 226 L230 238 L218 226 Z"/>
+            <path d="M354 212 L380 180 L408 214 L390 206 L380 220 L366 208 Z"/>
+            <path d="M672 204 L700 170 L730 206 L712 198 L700 212 L686 198 Z"/>
+            <path d="M994 222 L1020 190 L1048 224 L1030 216 L1020 230 L1006 216 Z"/>
+            <path d="M1316 248 L1340 220 L1366 250 L1350 244 L1340 256 L1328 244 Z"/>
+          </g>
+          <path class="brillo" pathLength="1000" d="M0 340 L90 262 L150 300 L230 200 L300 268 L380 180 L450 250 L540 210 L620 280 L700 170 L780 240 L860 200 L940 270 L1020 190 L1100 250 L1180 210 L1260 280 L1340 220 L1440 270"/>
+        </g>
+
+        <!-- Colinas verdes, el río azul y la pradera -->
+        <g class="cerca">
+          <path fill="#2E4A35" opacity=".6" d="M0 410 C200 350 380 392 560 362 C760 330 900 392 1100 360 C1260 338 1360 368 1440 350 L1440 640 L0 640 Z"/>
+          <path fill="#2E5C8A" opacity=".55" d="M770 372 C706 412 832 444 746 486 C664 528 790 580 706 640 L812 640 C872 580 768 526 852 484 C934 442 812 410 872 372 Z"/>
+          <path class="agua" d="M804 384 C760 420 850 448 790 490 C730 532 822 578 760 640"/>
+          <path class="agua" d="M836 380 C800 416 880 446 822 488 C766 530 852 580 796 640" style="animation-delay:-2s"/>
+          <path fill="#2A3F2A" opacity=".75" d="M0 486 C240 452 480 494 720 474 C960 454 1200 496 1440 468 L1440 640 L0 640 Z"/>
+          <!-- Lirios, zinnias y lavandas del mural (las genera vida.js) -->
+          <g class="flores-mural"></g>
+        </g>
+        <rect y="380" width="1440" height="260" fill="url(#suelo-mural)"/>
+      </svg>
+    </div>
+
+    <!-- Lluvia de pétalos de retama, geranios y micro-chakanas (la genera vida.js) -->
+    <div class="lluvia" aria-hidden="true"></div>
+
+    <div class="contenedor hero-grid">
+      <div>
+        <div class="estado-movil"><span class="estado" data-estado><span class="punto" aria-hidden="true"></span><span class="texto"></span></span></div>
+        <p class="saludo" id="saludo">Bienvenido a Tierra de Oro. ¿Qué historia vamos a almorzar hoy?</p>
+        <h1 id="titulo-hero">Cada plato, <span class="oro">una historia</span> por <span class="coral">contar</span></h1>
+        <p class="bajada">Sopas de la casa, platos de fondo y el menú de cada día, servidos en nuestro patio florido a media cuadra del Parque Central de Chosica.</p>
+        <div class="acciones">
+          <a class="boton" href="carta.html" data-portal>Entrar a la carta</a>
+          <button type="button" class="boton oro" data-reservar>Reserva tu mesa</button>
+        </div>
+        <div class="datos-rapidos">
+          <span><svg class="micro" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path class="ac" d="M12 7v5l3.2 2"/></svg> Todos los días 8:00 – 18:00 · Vie y Sáb hasta 22:00</span>
+          <span><svg class="micro" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-7.2 7-12.5a7 7 0 0 0-14 0C5 14.8 12 22 12 22z"/><circle class="ac" cx="12" cy="9.5" r="2.6"/></svg> Jr. Trujillo Sur 674, Chosica</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="recorte principal" data-recorte="0.458,0.145,0.23,0.64">
+          <img src="images/11.webp" alt="Plato de pollo con arroz, papas fritas y ensalada servido en Alpaqori">
+        </div>
+        <div class="mini foto-real">
+          <img src="images/local-fachada-noche.webp" alt="Fachada nocturna de Alpaqori, Tierra de Oro, con luces de verbena y buganvillas">
+        </div>
+        <div class="sello-logo" role="img" aria-label="Logo de Alpaqori: la llama con sombrero"><svg viewBox="0 0 200 200" aria-hidden="true" focusable="false"><defs><clipPath id="circulo-logo"><circle cx="100" cy="100" r="79"/></clipPath></defs><circle cx="100" cy="100" r="98" fill="#EE6C5E"/><circle cx="100" cy="100" r="84" fill="none" stroke="#FBF6EF" stroke-width="9"/><g clip-path="url(#circulo-logo)" fill="#FBF6EF" stroke="#EE6C5E" stroke-width="4" stroke-linejoin="round"><path d="M14 152 L44 116 L70 130 L76 200 L14 200 Z"/><path d="M116 200 L118 160 L140 128 L153 141 L167 113 L192 150 L192 200 Z"/><path d="M124 172 L188 160 M128 186 L186 176" fill="none"/><path d="M80 200 L87 104 L85 93 L91 82 L104 78 L123 84 L149 100 L152 110 L142 116 L121 118 L115 127 L113 200 Z"/><path d="M86 86 L72 56 L97 75 Z"/><path d="M93 73 L96 50 L122 46 L128 68 Z"/><path d="M74 79 L138 68 L140 76 L77 87 Z"/></g></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="telar" data-telar aria-hidden="true"></div>
+
+  <!-- ============ Hoy en el patio: especiales según el día ============ -->
+  <section class="seccion" id="hoy" hidden>
+    <div class="contenedor">
+      <div class="titulo-seccion" data-revelar>
+        <span class="sup">Hoy en el patio</span>
+        <h2>Lo que toca este <span id="hoy-dia">día</span></h2>
+        <p>Platos que solo preparamos ciertos días. Hoy es su turno.</p>
+      </div>
+      <div class="especiales" id="hoy-lista"></div>
+    </div>
+  </section>
+
+  <!-- ============ Plato estrella: el menú del día ============ -->
+  <section class="seccion blanca" id="menu-dia">
+    <div class="contenedor">
+      <div class="titulo-seccion" data-revelar>
+        <span class="sup">Plato estrella del día</span>
+        <h2>Menú del día</h2>
+        <p>Entrada, segundo y postre, como en casa.</p>
+      </div>
+      <div class="estrella">
+        <div class="poster-vapor" data-revelar>
+          <!-- Vapor de olla de barro -->
+          <svg class="vapor claro" viewBox="0 0 160 120" aria-hidden="true" focusable="false">
+            <path d="M50 110 C35 85 65 70 50 45 C40 28 55 15 50 5"/>
+            <path d="M80 110 C65 85 95 70 80 45 C70 28 85 15 80 5"/>
+            <path d="M110 110 C95 85 125 70 110 45 C100 28 115 15 110 5"/>
+          </svg>
+          <div class="poster">
+            <img src="images/9.webp" alt="Afiche del Menú Campechano de Alpaqori con entradas, segundos y postre" loading="lazy">
+          </div>
+        </div>
+        <div class="menu-card" data-revelar style="--i:1">
+          <div class="fecha" id="menu-fecha">Hoy</div>
+          <h3>Menú del día</h3>
+          <div class="tiempos">
+            <div><h4>Entradas</h4><ul id="menu-entradas"></ul></div>
+            <div><h4>Segundos</h4><ul id="menu-segundos"></ul></div>
+            <div><h4>Postre</h4><ul id="menu-postre"></ul></div>
+          </div>
+          <div class="pie">
+            <div class="precio">Precio: <span id="menu-precio"></span></div>
+            <a class="boton wa" data-wa="Hola Alpaqori, quiero pedir el menú del día">Pedir por WhatsApp</a>
+          </div>
+          <p class="aviso">Horario del menú: <span class="pendiente">[CONFIRMAR]</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="telar claro" data-telar aria-hidden="true"></div>
+
+  <!-- ============ Categorías: puertas a la carta ============ -->
+  <section class="seccion" id="carta">
+    <div class="contenedor">
+      <div class="titulo-seccion" data-revelar>
+        <span class="sup">Nuestra carta</span>
+        <h2>Sabores que cuentan historias</h2>
+        <p>Más de 150 opciones entre desayunos, sopas, platos de fondo, marinos, bebidas y cócteles.</p>
+      </div>
+      <div class="categorias" data-escalonar>
+        <a class="cat-card" href="carta.html#cat=sopas" data-portal>
+          <div class="recorte" data-recorte="0.13,0.47,0.74,0.415"><img src="images/17.webp" alt="Sopa criolla servida en olla de barro" loading="lazy"></div>
+          <div class="texto"><h3>Sopas</h3><p>Una para cada día</p></div>
+        </a>
+        <a class="cat-card" href="carta.html#cat=platos-de-fondo" data-portal>
+          <div class="recorte" data-recorte="0.1,0.73,0.375,0.147"><img src="images/18.webp" alt="Plato de fondo con frejoles y arroz" loading="lazy"></div>
+          <div class="texto"><h3>Platos de fondo</h3><p>Los clásicos criollos</p></div>
+        </a>
+        <a class="cat-card" href="carta.html#cat=platos-fin-de-semana" data-portal>
+          <div class="recorte" data-recorte="0.52,0.08,0.39,0.124"><img src="images/20.webp" alt="Ceviche con leche de tigre" loading="lazy"></div>
+          <div class="texto"><h3>Fin de semana</h3><p>Marinos y especiales</p></div>
+        </a>
+        <a class="cat-card" href="carta.html#cat=desayunos" data-portal>
+          <div class="recorte" data-recorte="0.59,0.09,0.345,0.146"><img src="images/16.webp" alt="Plato de lomo con papas fritas y arroz" loading="lazy"></div>
+          <div class="texto"><h3>Desayunos</h3><p>Para empezar con fuerza</p></div>
+        </a>
+        <a class="cat-card" href="carta.html#cat=bebidas-naturales-frozen" data-portal>
+          <div class="recorte" data-recorte="0.1,0.08,0.38,0.12"><img src="images/20.webp" alt="Chicha morada servida en vaso" loading="lazy"></div>
+          <div class="texto"><h3>Bebidas</h3><p>Chicha, frozen y más</p></div>
+        </a>
+      </div>
+      <p style="text-align:center; margin-top: 34px;"><a class="boton" href="carta.html" data-portal>Entrar a la carta completa</a></p>
+    </div>
+  </section>
+
+  <div class="telar claro" data-telar aria-hidden="true"></div>
+
+  <!-- ============ Nosotros ============ -->
+  <section class="seccion blanca" id="nosotros">
+    <div class="contenedor nosotros">
+      <div class="fotos" data-escalonar>
+        <div class="foto-real"><img src="images/local-salon-mural.webp" alt="Salón de Alpaqori con el mural de nevados, techo de flores y lámparas tejidas" loading="lazy"></div>
+        <div class="foto-real"><img src="images/local-entrada-buganvillas.webp" alt="Entrada de Alpaqori con buganvillas fucsias y mural de lirios" loading="lazy"></div>
+      </div>
+      <div data-revelar>
+        <span class="etiqueta">Nosotros</span>
+        <h2>Nuestra Tierra de Oro</h2>
+        <p>En Alpaqori cocinamos la tradición criolla peruana a media cuadra del Parque Central de Chosica.
+          Nuestro patio, lleno de flores, banderines y murales de colores, es el lugar para compartir
+          una buena sopa, un plato de fondo o el menú de cada día.</p>
+        <p class="cita">"Los buenos sabores se comparten entre amigos."</p>
+        <p class="aviso"><span class="pendiente">[CONFIRMAR]</span> Historia completa del restaurante y sus fundadores.
+          Este texto es una propuesta armada con las frases y fotos de nuestras redes.</p>
+        <div class="valores">
+          <span>Comida criolla</span>
+          <span>Sopas por día</span>
+          <span>Menú diario</span>
+          <span>Delivery en Chosica</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Galería (noche) ============ -->
+  <section class="seccion noche" id="galeria">
+    <div class="contenedor">
+      <div class="titulo-seccion" data-revelar>
+        <span class="sup">Galería</span>
+        <h2>Así se vive Alpaqori</h2>
+        <p>Síguenos en <a data-config="instagram" href="#" target="_blank" rel="noopener" style="color: var(--dorado-claro);">Instagram</a> y
+          <a data-config="facebook" href="#" target="_blank" rel="noopener" style="color: var(--dorado-claro);">Facebook</a>.</p>
+      </div>
+      <div class="portada" data-revelar>
+        <div class="recorte" data-recorte="0.145,0.118,0.738,0.51" style="border-radius: 18px; margin-bottom: 12px; border: 2px solid var(--brand-dorado);">
+          <img src="images/12.webp" alt="Portada de Alpaqori: Sabores que cuentan historias, con platos criollos" loading="lazy">
+        </div>
+      </div>
+      <div class="galeria" data-escalonar>
+        <figure><div class="recorte" data-recorte="0.612,0.575,0.183,0.415"><img src="images/10.webp" alt="Plato criollo servido sobre mantel" loading="lazy"></div></figure>
+        <figure><div class="foto-real"><img src="images/local-entrada-buganvillas.webp" alt="Entrada con buganvillas y mural de lirios" loading="lazy"></div></figure>
+        <figure><div class="foto-real"><img src="images/local-salon-mural.webp" alt="Salón con el mural de los nevados" loading="lazy"></div></figure>
+        <figure><div class="foto-real"><img src="images/local-fachada-noche.webp" alt="Fachada de Alpaqori de noche" loading="lazy"></div></figure>
+      </div>
+      <p class="aviso" style="text-align:center; margin-top: 14px; color: rgba(251,246,239,.6);"><span class="pendiente">[CONFIRMAR]</span> Reemplazar por las fotos originales en alta resolución.</p>
+    </div>
+  </section>
+
+  <div class="telar" data-telar aria-hidden="true"></div>
+
+  <!-- ============ Ubicación ============ -->
+  <section class="seccion" id="ubicacion">
+    <div class="contenedor">
+      <div class="titulo-seccion" data-revelar>
+        <span class="sup">Visítanos</span>
+        <h2>Ubicación y horario</h2>
+      </div>
+      <div class="ubicacion" data-escalonar>
+        <div class="tarjeta">
+          <h3>Te esperamos</h3>
+          <div class="dato"><span class="ico"><svg class="micro" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-7.2 7-12.5a7 7 0 0 0-14 0C5 14.8 12 22 12 22z"/><circle class="ac" cx="12" cy="9.5" r="2.6"/></svg></span><div><strong>Dirección</strong><br><span data-config="direccion"></span></div></div>
+          <div class="dato"><span class="ico"><svg class="micro" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8z"/><path class="ac" d="M8 9h8M8 12.5h5"/></svg></span><div><strong>Pedidos y delivery</strong><br>WhatsApp <span data-config="telefonoPublico"></span><br>
+            <small class="aviso">Delivery desde S/ 8.00 (aprox. 10 min en moto) · Zonas exactas <span class="pendiente">[CONFIRMAR]</span></small></div></div>
+          <table class="horario" aria-label="Horario de atención">
+            <tr data-dias="lunes,martes,miercoles,jueves"><td>Lunes a jueves</td><td>8:00 – 18:00</td></tr>
+            <tr data-dias="viernes,sabado"><td>Viernes y sábado</td><td>8:00 – 22:00</td></tr>
+            <tr data-dias="domingo"><td>Domingo</td><td>8:00 – 18:00</td></tr>
+          </table>
+          <div class="acciones">
+            <a class="boton wa" data-wa="Hola Alpaqori, quiero hacer un pedido">Escríbenos</a>
+            <button type="button" class="boton" data-reservar>Reservar mesa</button>
+            <button type="button" class="boton" data-reservar="grupo">Cotizar una celebración</button>
+            <a class="boton" data-config="mapsBusqueda" href="#" target="_blank" rel="noopener">Cómo llegar</a>
+          </div>
+        </div>
+        <div class="mapa">
+          <div>
+            <div class="pin"><svg class="micro" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-7.2 7-12.5a7 7 0 0 0-14 0C5 14.8 12 22 12 22z"/><circle class="ac" cx="12" cy="9.5" r="2.6"/></svg></div>
+            <strong>Jr. Trujillo Sur 674, Chosica</strong>
+            <p>A media cuadra del Parque Central.<br>Mapa incrustado <span class="pendiente">[CONFIRMAR]</span></p>
+            <a class="boton chico" data-config="mapsBusqueda" href="#" target="_blank" rel="noopener">Abrir en Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="telar" data-telar aria-hidden="true"></div>
+<footer class="pie-pagina">
+  <div class="contenedor">
+    <div class="recorte isotipo" data-recorte="0.375,0.163,0.25,0.245"><img src="images/1.png" alt="Logo de Alpaqori"></div>
+    <p class="lema">Cada plato, una historia por contar</p>
+    <div class="redes">
+      <a data-config="facebook" href="#" target="_blank" rel="noopener">Facebook</a>
+      <a data-config="instagram" href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="carta.html" data-portal>Carta y pedidos</a>
+      <a href="#" data-asistente>Asistente</a>
+      <a href="personal.html" rel="nofollow">Acceso del personal</a>
+    </div>
+    <p class="legal">Precios incluyen IGV. Si tienes alguna alergia o intolerancia, avísanos al hacer tu pedido.<br>
+      Razón social <span class="pendiente">[CONFIRMAR]</span> · RUC <span class="pendiente">[CONFIRMAR]</span></p>
+    <div class="libro-ref" role="img" aria-label="Imagen referencial del libro de reclamaciones">
+      <span class="libro"></span> Libro de Reclamaciones (imagen referencial)
+    </div>
+  </div>
+</footer>
+
+<a class="flotante" data-wa="Hola Alpaqori, quiero hacer un pedido" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>
+</a>
+
+<script src="js/config.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/comun.js"></script>
+<script src="js/vida.js"></script>
+<script src="js/reservas.js"></script>
+<script src="js/asistente.js"></script>
+<script src="js/portal.js"></script>
+<script>
+  /* Menú del día: se llena desde catalogo.json (menu_del_dia). Editar ahí, no aquí. */
+  (function () {
+    var menu = window.ALPAQORI_CATALOGO.menu_del_dia;
+
+    function llenar(id, items) {
+      var ul = document.getElementById(id);
+      items.forEach(function (texto) {
+        var li = document.createElement("li");
+        li.textContent = texto;
+        ul.appendChild(li);
+      });
+    }
+
+    llenar("menu-entradas", menu.entradas);
+    llenar("menu-segundos", menu.segundos);
+    llenar("menu-postre", menu.postre);
+
+    var hoy = new Intl.DateTimeFormat("es-PE", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Lima" }).format(new Date());
+    document.getElementById("menu-fecha").textContent = "Hoy · " + hoy;
+
+    var precio = document.getElementById("menu-precio");
+    if (typeof menu.precio_pen === "number") precio.textContent = "S/ " + menu.precio_pen.toFixed(2);
+    else precio.innerHTML = '<span class="pendiente">[CONFIRMAR]</span>';
+  })();
+</script>
+</body>
+</html>

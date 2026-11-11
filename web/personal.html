@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personal · Alpaqori</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/operacion.css">
+</head>
+<body class="op op--personal" data-pantalla="personal">
+  <header class="per-cabecera">
+    <a class="op-marca" href="personal.html" data-logo>ALPAQORI</a>
+    <nav class="per-nav" aria-label="Pantallas del personal" data-per-nav></nav>
+  </header>
+  <p class="per-demo" data-aviso-demo hidden>Modo demostración: cocina, caja y los pedidos por QR funcionan en este navegador, sin internet ni cuentas. Para usarlo con varios equipos a la vez hay que conectar Supabase (ver supabase/LEEME.md).</p>
+
+  <main class="per-hub">
+    <p class="per-hub__saludo" id="hub-saludo">Buen día, equipo</p>
+    <h1 class="per-hub__titulo">El patio por dentro</h1>
+    <p class="per-hub__bajada">Todo lo que pasa en el salón, en una sola pantalla. Los pedidos de las mesas llegan directo a cocina; los de delivery siguen llegando por WhatsApp.</p>
+
+    <div class="per-hub__datos" aria-live="polite">
+      <div class="per-hub__dato per-hub__dato--alerta">Por confirmar<strong id="d-confirmar">0</strong></div>
+      <div class="per-hub__dato">En cocina<strong id="d-cocina">0</strong></div>
+      <div class="per-hub__dato">Cuentas abiertas<strong id="d-cuentas">0</strong></div>
+      <div class="per-hub__dato">Cobrado hoy<strong id="d-cobrado">S/ 0.00</strong></div>
+    </div>
+
+    <div class="per-hub__grid">
+      <a class="per-tarjeta" href="cocina.html">
+        <span class="per-tarjeta__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16v2a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M2 11h20M9 7c0-1.5 1-1.5 1-3M13 7c0-1.5 1-1.5 1-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <h2>Cocina</h2>
+        <p>Comandas en vivo por estado, con campana y aviso de demora a los 15 minutos.</p>
+        <span class="per-tarjeta__ir">Abrir cocina →</span>
+      </a>
+      <a class="per-tarjeta" href="caja.html">
+        <span class="per-tarjeta__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <h2>Caja</h2>
+        <p>Cuentas abiertas por mesa, cobro en efectivo, tarjeta o Yape/Plin y resumen del día.</p>
+        <span class="per-tarjeta__ir">Abrir caja →</span>
+      </a>
+      <a class="per-tarjeta" href="mesas-qr.html">
+        <span class="per-tarjeta__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM18 14h2M14 18v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <h2>QR de mesas</h2>
+        <p>Genera e imprime el QR de cada mesa: el cliente escanea, pide y paga desde su celular.</p>
+        <span class="per-tarjeta__ir">Generar QR →</span>
+      </a>
+      <a class="per-tarjeta" href="carta.html?mesa=1" target="_blank" rel="noopener">
+        <span class="per-tarjeta__icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <h2>Probar como cliente</h2>
+        <p>Abre la carta como si escanearas el QR de la Mesa 1 y envía un pedido de prueba.</p>
+        <span class="per-tarjeta__ir">Abrir Mesa 1 →</span>
+      </a>
+    </div>
+
+    <div class="per-hub__herramientas" data-solo-demo hidden>
+      <button type="button" class="per-boton" id="hub-prueba">Crear pedido de prueba</button>
+      <button type="button" class="per-boton per-boton--rechazo" id="hub-vaciar">Borrar pedidos de prueba</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/pedidos-store.js"></script>
+  <script src="js/pedidos-supabase.js"></script>
+  <script src="js/acceso-personal.js"></script>
+  <script src="js/operacion-comun.js"></script>
+  <script src="js/personal.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carta · Alpaqori</title>
+  <meta name="description" content="La carta del patio de Alpaqori: comida criolla peruana en Chosica. Arma tu pedido y envíalo por WhatsApp.">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="pagina-carta">
+
+<header class="topbar">
+  <div class="contenedor">
+    <a class="marca" href="index.html" aria-label="Alpaqori, volver al inicio">
+      <div class="recorte isotipo" data-recorte="0.375,0.163,0.25,0.245"><img src="images/1.png" alt=""></div>
+      <span>ALPAQORI</span>
+    </a>
+    <span class="estado" data-estado role="status"><span class="punto" aria-hidden="true"></span><span class="texto">Horario: 8:00 a. m. a 6:00 p. m.</span></span>
+    <div class="acciones-topbar">
+      <button type="button" class="boton chico oro" data-reservar>Reservar</button>
+      <a class="boton chico" href="#pedido" id="ver-pedido">Mi pedido (0)</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Portada: el patio de día ============ -->
+<section class="portada-carta" aria-labelledby="titulo-carta">
+  <!-- Marcos de enredadera con lirios y zinnias, como el mural de la entrada -->
+  <svg class="enredadera izq" viewBox="0 0 180 160" aria-hidden="true" focusable="false"><path d="M4 8 C40 4 70 20 110 10 C140 4 160 10 176 6 M8 6 C4 40 18 70 8 100 C2 124 8 140 6 156" fill="none" stroke="#4E7A3A" stroke-width="3" stroke-linecap="round"/><path d="M110 10 q8 8 2 14 M8 100 q10 4 6 12 M60 14 q2 10 -6 12" fill="none" stroke="#4E7A3A" stroke-width="1.6"/><ellipse cx="26" cy="10" rx="9" ry="4" transform="rotate(-20 26 10)" fill="#4E7A3A"/><ellipse cx="84" cy="16" rx="9" ry="4" transform="rotate(30 84 16)" fill="#4E7A3A"/><ellipse cx="130" cy="6" rx="9" ry="4" transform="rotate(-15 130 6)" fill="#4E7A3A"/><ellipse cx="154" cy="10" rx="9" ry="4" transform="rotate(20 154 10)" fill="#4E7A3A"/><ellipse cx="12" cy="58" rx="9" ry="4" transform="rotate(70 12 58)" fill="#4E7A3A"/><ellipse cx="14" cy="84" rx="9" ry="4" transform="rotate(110 14 84)" fill="#4E7A3A"/><ellipse cx="6" cy="128" rx="9" ry="4" transform="rotate(80 6 128)" fill="#4E7A3A"/><ellipse cx="48" cy="12" rx="9" ry="4" transform="rotate(15 48 12)" fill="#4E7A3A"/><g transform="translate(40 40) scale(.62)"><g class="lirio"><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(0)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(60)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(120)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(180)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(240)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(300)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 L-6 -16 M0 0 L6 -16 M0 0 L0 -18" stroke="#A81E35" stroke-width="1.4"/><circle r="4" fill="#C98A1E"/></g></g><g transform="translate(96 26) scale(.6)"><g class="lirio b"><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(0)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(30)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(60)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(90)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(120)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(150)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(180)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(210)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(240)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(270)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(300)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(330)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><circle r="6" fill="#A81E35"/><circle r="3" fill="#F2B544"/></g></g><g transform="translate(18 120) scale(.45)"><g class="lirio b"><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(0)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(60)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(120)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(180)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(240)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(300)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 L-6 -16 M0 0 L6 -16 M0 0 L0 -18" stroke="#A81E35" stroke-width="1.4"/><circle r="4" fill="#C98A1E"/></g></g></svg>
+  <svg class="enredadera der" viewBox="0 0 180 160" aria-hidden="true" focusable="false"><path d="M4 8 C40 4 70 20 110 10 C140 4 160 10 176 6 M8 6 C4 40 18 70 8 100 C2 124 8 140 6 156" fill="none" stroke="#4E7A3A" stroke-width="3" stroke-linecap="round"/><path d="M110 10 q8 8 2 14 M8 100 q10 4 6 12 M60 14 q2 10 -6 12" fill="none" stroke="#4E7A3A" stroke-width="1.6"/><ellipse cx="26" cy="10" rx="9" ry="4" transform="rotate(-20 26 10)" fill="#4E7A3A"/><ellipse cx="84" cy="16" rx="9" ry="4" transform="rotate(30 84 16)" fill="#4E7A3A"/><ellipse cx="130" cy="6" rx="9" ry="4" transform="rotate(-15 130 6)" fill="#4E7A3A"/><ellipse cx="154" cy="10" rx="9" ry="4" transform="rotate(20 154 10)" fill="#4E7A3A"/><ellipse cx="12" cy="58" rx="9" ry="4" transform="rotate(70 12 58)" fill="#4E7A3A"/><ellipse cx="14" cy="84" rx="9" ry="4" transform="rotate(110 14 84)" fill="#4E7A3A"/><ellipse cx="6" cy="128" rx="9" ry="4" transform="rotate(80 6 128)" fill="#4E7A3A"/><ellipse cx="48" cy="12" rx="9" ry="4" transform="rotate(15 48 12)" fill="#4E7A3A"/><g transform="translate(40 40) scale(.62)"><g class="lirio"><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(0)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(60)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(120)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(180)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(240)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(300)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 L-6 -16 M0 0 L6 -16 M0 0 L0 -18" stroke="#A81E35" stroke-width="1.4"/><circle r="4" fill="#C98A1E"/></g></g><g transform="translate(96 26) scale(.6)"><g class="lirio b"><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(0)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(30)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(60)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(90)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(120)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(150)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(180)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(210)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(240)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(270)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(300)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><ellipse cx="0" cy="-11" rx="4" ry="8" transform="rotate(330)" fill="#D9314A" stroke="#A81E35" stroke-width=".8"/><circle r="6" fill="#A81E35"/><circle r="3" fill="#F2B544"/></g></g><g transform="translate(18 120) scale(.45)"><g class="lirio b"><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(0)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(60)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(120)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(180)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(240)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 C7 -12 6 -28 0 -38 C-6 -28 -7 -12 0 0 Z" transform="rotate(300)" fill="#F2B544" stroke="#C98A1E" stroke-width="1.2"/><path d="M0 0 L-6 -16 M0 0 L6 -16 M0 0 L0 -18" stroke="#A81E35" stroke-width="1.4"/><circle r="4" fill="#C98A1E"/></g></g></svg>
+  <svg class="guirnalda dia" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false"></svg>
+  <div class="contenedor">
+    <div class="estado-movil"><span class="estado" data-estado style="background: rgba(42,33,29,.08); color: var(--bg-tinta);"><span class="punto" aria-hidden="true"></span><span class="texto"></span></span></div>
+    <p class="saludo" id="saludo">Bienvenido a Tierra de Oro. ¿Qué historia vamos a almorzar hoy?</p>
+    <h1 id="titulo-carta"><small>Tierra de Oro · Chosica</small>La carta del patio</h1>
+    <p class="bajada">Precios en soles, incluyen IGV. Elige tus platos, arma tu pedido y envíalo por WhatsApp.</p>
+    <div class="hoy-toca" id="hoy-toca" hidden></div>
+  </div>
+  <svg class="ondas" data-ondas viewBox="0 0 1440 34" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"></svg>
+</section>
+
+<!-- ============ Buscador y filtros ============ -->
+<div class="herramientas">
+  <div class="contenedor">
+    <div class="caja-busqueda">
+      <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label class="solo-lectores" for="buscador">Buscar en la carta</label>
+      <input id="buscador" class="buscador" type="search" placeholder="Busca: ceviche, caldo, chaufa…" autocomplete="off" enterkeyhint="search">
+      <button class="limpiar" id="limpiar" type="button" aria-label="Borrar búsqueda" hidden>×</button>
+    </div>
+    <div id="chips" class="chips" role="group" aria-label="Secciones de la carta"></div>
+  </div>
+</div>
+
+<div class="contenedor carta-layout">
+  <main>
+    <p class="conteo" id="conteo" aria-live="polite"></p>
+    <div id="lista" class="lista-carta"></div>
+  </main>
+
+  <aside id="pedido" class="pedido" aria-labelledby="titulo-pedido">
+    <h2 id="titulo-pedido">Tu pedido</h2>
+    <div id="carrito"></div>
+    <div class="resumen" id="resumen"></div>
+
+    <form id="form-pedido" novalidate>
+      <div class="campo" data-solo-whatsapp>
+        <span class="rotulo">Entrega</span>
+        <div class="segmentado">
+          <label><input type="radio" name="entrega" value="recojo" checked> Recojo en local</label>
+          <label><input type="radio" name="entrega" value="delivery"> Delivery</label>
+        </div>
+      </div>
+      <div class="campo" id="campo-direccion" hidden>
+        <label for="direccion">Dirección de entrega</label>
+        <input id="direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Calle, número y referencia">
+        <button type="button" class="boton-gps" id="usar-gps">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          Usar mi ubicación
+        </button>
+        <small class="aviso" id="gps-info" aria-live="polite"></small>
+        <small class="aviso">Desde S/ 8.00 (aprox. 10 min en moto) · Zonas exactas <span class="pendiente">[CONFIRMAR]</span></small>
+      </div>
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" type="text" autocomplete="given-name" placeholder="¿A nombre de quién?">
+      </div>
+      <div class="campo" data-solo-whatsapp>
+        <span class="rotulo">Pago</span>
+        <div class="segmentado">
+          <label><input type="radio" name="pago" value="Yape" checked> Yape</label>
+          <label><input type="radio" name="pago" value="Plin"> Plin</label>
+          <label><input type="radio" name="pago" value="Efectivo"> Efectivo</label>
+        </div>
+      </div>
+      <div class="campo" id="campo-efectivo" hidden>
+        <label for="efectivo">¿Con cuánto pagas? (para el vuelto)</label>
+        <input id="efectivo" name="efectivo" type="number" min="0" step="0.5" inputmode="decimal">
+      </div>
+      <div class="campo">
+        <label for="indicaciones">Indicaciones (opcional)</label>
+        <input id="indicaciones" name="indicaciones" type="text" placeholder="Alergias, sin picante, cubiertos…">
+      </div>
+      <label class="consentimiento" data-solo-whatsapp>
+        <input id="consentimiento" type="checkbox">
+        <span>Acepto el uso de mis datos para gestionar este pedido (Ley 29733).</span>
+      </label>
+      <button class="boton wa" type="submit" id="enviar" style="width:100%; margin-top: 16px;">Enviar pedido por WhatsApp</button>
+      <p class="aviso" id="aviso-envio" style="margin-bottom:0;">Se abrirá WhatsApp con tu pedido listo: solo toca <strong>Enviar</strong>.
+        Nuestro asistente te confirmará el número de pedido.</p>
+    </form>
+  </aside>
+</div>
+
+<div class="telar" data-telar aria-hidden="true"></div>
+<footer class="pie-pagina">
+  <div class="contenedor">
+    <p class="lema">Cada plato, una historia por contar</p>
+    <div class="redes">
+      <a href="index.html">← Volver al inicio</a>
+      <a data-config="instagram" href="#" target="_blank" rel="noopener">Instagram</a>
+      <a data-config="facebook" href="#" target="_blank" rel="noopener">Facebook</a>
+    </div>
+    <p class="legal">Precios incluyen IGV. Si tienes alguna alergia o intolerancia, avísanos en las indicaciones.</p>
+    <div class="libro-ref" role="img" aria-label="Imagen referencial del libro de reclamaciones">
+      <span class="libro"></span> Libro de Reclamaciones (imagen referencial)
+    </div>
+  </div>
+</footer>
+
+<a class="barra-carrito" id="barra-carrito" href="#pedido">
+  <span class="cuenta" id="barra-cuenta">0 platos</span>
+  <span class="total-barra" id="barra-total">S/ 0.00</span>
+  <span class="boton chico">Ver pedido</span>
+</a>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/pedidos-store.js"></script>
+<script src="js/pedidos-supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/comun.js"></script>
+<script src="js/arte.js"></script>
+<script src="js/vida.js"></script>
+<script src="js/carta.js"></script>
+<script src="js/reservas.js"></script>
+<script src="js/asistente.js"></script>
+<script src="js/portal.js"></script>
+</body>
+</html>

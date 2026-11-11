@@ -1,0 +1,1201 @@
+/* ==========================================================
+   Alpaqori · El Patio de Tierra de Oro + El Telar Vivo
+   Estilos compartidos de index.html y carta.html
+   ========================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  /* Paleta oficial */
+  --bg-tinta: #2A211D;
+  --bg-crema: #FBF6EF;
+  --brand-coral: #EE6C5E;
+  --brand-dorado: #C9A45C;
+  --brand-carbon: #111111;
+
+  /* Derivados (contraste y superficies) */
+  --tinta-2: #3A2E28;
+  --tinta-suave: #6B5D55;
+  --coral-oscuro: #C9483A;
+  --coral-texto: #B23C2F;
+  --coral-suave: #FDE8E4;
+  --dorado-claro: #E6CC92;
+  --dorado-suave: #F4EAD6;
+  --papel: #FFFFFF;
+  --borde: #EADFD3;
+  --verde-vivo: #3BCF6F;
+  --ambar: #F2B544;
+  --verde-wa: #25D366;
+
+  /* Tipografía */
+  --font-display: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Curvas de movimiento con identidad */
+  --ease-huayno: cubic-bezier(0.34, 1.56, 0.64, 1);  /* rebote festivo: carrito, botones, modales */
+  --ease-telar: cubic-bezier(0.22, 1, 0.36, 1);      /* desaceleración sedosa: revelados y trazos */
+  --ease-brisa: cubic-bezier(0.45, 0, 0.55, 1);      /* péndulo: banderines, flores, vapor */
+
+  /* Formas */
+  --radio: 18px;
+  --sombra: 0 8px 24px -4px rgba(42, 33, 29, .10);
+  --sombra-alta: 0 24px 50px -12px rgba(42, 33, 29, .35);
+
+  /* Textura de papel artesanal: SVG inline, 0 KB de red */
+  --grano: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.13 0 0 0 0 0.11 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)' opacity='.035'/></svg>");
+
+  /* Alias que usa la carta actual (se renuevan en la Entrega 2) */
+  --coral: var(--brand-coral);
+  --dorado: var(--brand-dorado);
+  --crema: var(--bg-crema);
+  --tinta: var(--bg-tinta);
+  --titulos: var(--font-display);
+  --texto: var(--font-body);
+}
+
+/* El portal: radio del rombo animable (Chrome, Edge, Safari 16.4+, Firefox 128+) */
+@property --r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* Nota: no se usa @view-transition entre páginas. En celulares lentos congelaba la pantalla
+   hasta terminar; el portal en rombo (portal.js) ya hace la transición con su propia animación. */
+
+/* ---------- 2. Base ---------- */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bg-tinta);
+  background: var(--bg-crema) var(--grano);
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--coral-texto); }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; margin: 0; font-weight: 600; }
+:focus-visible { outline: 3px solid var(--brand-dorado); outline-offset: 3px; }
+
+.contenedor { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+.solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pendiente { background: #FFF1BF; color: #5C4700; border-radius: 6px; padding: 1px 6px; font-size: .85em; font-weight: 700; white-space: nowrap; }
+.aviso { font-size: 13px; color: var(--tinta-suave); }
+
+/* ---------- 3. Recortes de foto (capturas → solo la foto) ---------- */
+.recorte { position: relative; overflow: hidden; background: var(--tinta-2); aspect-ratio: 4 / 3; }
+.recorte img { position: absolute; max-width: none; }
+
+/* ---------- 4. Encabezado nocturno ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(42, 33, 29, .92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--bg-crema);
+  border-bottom: 1px solid rgba(201, 164, 92, .25);
+}
+.topbar .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 66px; }
+.marca { display: flex; align-items: center; gap: 10px; color: var(--bg-crema); text-decoration: none; flex-shrink: 0; }
+.marca span { font-family: var(--font-display); font-weight: 600; font-size: 22px; letter-spacing: .07em; }
+.isotipo {
+  width: 44px; height: 44px; border-radius: 50%; aspect-ratio: 1; flex-shrink: 0;
+  border: 2px solid var(--brand-dorado); background: var(--brand-coral);
+  transition: transform .6s var(--ease-huayno);
+}
+/* El guiño de la llama: gira y destella en oro */
+.marca:hover .isotipo, .marca.guino .isotipo { transform: rotate(-14deg) scale(1.06); animation: destello 0.9s var(--ease-telar); }
+@keyframes destello {
+  0% { box-shadow: 0 0 0 0 rgba(201, 164, 92, .8); }
+  100% { box-shadow: 0 0 0 14px rgba(201, 164, 92, 0); }
+}
+
+.nav { display: none; gap: 24px; }
+.nav a { color: var(--bg-crema); text-decoration: none; font-weight: 600; font-size: 14px; position: relative; }
+.nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--brand-dorado);
+  transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease-telar);
+}
+.nav a:hover::after { transform: scaleX(1); }
+@media (min-width: 1180px) { .nav { display: flex; } }
+.nav a, .topbar .boton { white-space: nowrap; }
+
+/* Estado en vivo: abierto / cocina descansando */
+.estado {
+  display: none; align-items: center; gap: 8px; font-size: 12px; font-weight: 600;
+  padding: 6px 12px; border-radius: 999px; background: rgba(251, 246, 239, .08); color: var(--dorado-claro);
+  white-space: nowrap;
+}
+.estado .punto { width: 9px; height: 9px; border-radius: 50%; background: var(--ambar); flex-shrink: 0; }
+.estado.abierto .punto { background: var(--verde-vivo); animation: latido 1.8s var(--ease-brisa) infinite; }
+@keyframes latido {
+  0% { box-shadow: 0 0 0 0 rgba(59, 207, 111, .7); }
+  70% { box-shadow: 0 0 0 8px rgba(59, 207, 111, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 207, 111, 0); }
+}
+@media (min-width: 760px) { .estado { display: inline-flex; } }
+.estado-movil { display: flex; justify-content: center; margin-bottom: 18px; }
+.estado-movil .estado { display: inline-flex; }
+@media (min-width: 760px) { .estado-movil { display: none; } }
+
+/* ---------- 5. Botones ---------- */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 0; border-radius: 999px; padding: 14px 26px; cursor: pointer;
+  font-family: var(--font-body); font-weight: 700; font-size: 15px; text-decoration: none;
+  background: var(--brand-coral); color: #fff;
+  transition: transform .35s var(--ease-huayno), background .2s, box-shadow .3s;
+}
+.boton:hover { transform: translateY(-2px) scale(1.03); background: var(--coral-oscuro); box-shadow: 0 10px 24px -8px rgba(238, 108, 94, .7); }
+.boton:active { transform: scale(.97); }
+.boton.oro { background: transparent; color: var(--dorado-claro); box-shadow: inset 0 0 0 2px var(--brand-dorado); }
+.boton.oro:hover { background: rgba(201, 164, 92, .14); }
+.boton.claro { background: var(--bg-crema); color: var(--coral-texto); }
+.boton.claro:hover { background: #fff; }
+.boton.wa { background: var(--verde-wa); }
+.boton.wa:hover { background: #1ebe5a; box-shadow: 0 10px 24px -8px rgba(37, 211, 102, .6); }
+.boton.chico { padding: 9px 18px; font-size: 14px; }
+.boton:disabled { background: #c9c0b8; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ---------- 6. Hero nocturno: guirnalda, polvo de oro ---------- */
+.hero-noche {
+  position: relative; overflow: hidden; color: var(--bg-crema);
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 40%, rgba(238, 108, 94, .22), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(201, 164, 92, .16), transparent 70%),
+    var(--bg-tinta);
+}
+.hero-noche::after {  /* grano también de noche */
+  content: ""; position: absolute; inset: 0; background: var(--grano); opacity: .9; pointer-events: none;
+}
+
+/* Guirnalda de banderines y farolillos (la genera vida.js) */
+.guirnalda { display: block; width: 100%; height: 92px; position: relative; z-index: 2; }
+@media (min-width: 900px) { .guirnalda { height: 120px; } }
+.guirnalda .cuerda { fill: none; stroke: rgba(230, 204, 146, .55); stroke-width: 1.6; }
+.banderin { transform-box: fill-box; transform-origin: top center; }
+.brisa-lenta { animation: brisa 6.1s var(--ease-brisa) infinite alternate; }
+.brisa-media { animation: brisa 5.7s var(--ease-brisa) infinite alternate-reverse; }
+.brisa-rapida { animation: brisa 4.3s var(--ease-brisa) infinite alternate; }
+@keyframes brisa {
+  from { transform: rotate(-2.5deg); }
+  to { transform: rotate(3.5deg); }
+}
+.farol-luz { animation: titila 3.7s var(--ease-brisa) infinite alternate; }
+@keyframes titila { from { opacity: .35; } to { opacity: .8; } }
+
+/* Polvo de oro: motas que suben como polen al atardecer */
+.polvo-oro { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.mota {
+  position: absolute; bottom: -10px; left: var(--x); width: var(--t, 5px); height: var(--t, 5px); border-radius: 50%;
+  background: var(--brand-dorado); filter: blur(1px); opacity: 0;
+  animation: subir var(--d, 14s) linear var(--retraso, 0s) infinite;
+  will-change: transform, opacity;
+}
+@keyframes subir {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  12% { opacity: .45; }
+  50% { transform: translate3d(var(--deriva, 20px), -45vh, 0); }
+  85% { opacity: .35; }
+  100% { transform: translate3d(0, -90vh, 0); opacity: 0; }
+}
+
+.hero-grid { position: relative; z-index: 2; display: grid; gap: 40px; padding-top: 8px; padding-bottom: 72px; }
+@media (min-width: 940px) { .hero-grid { grid-template-columns: 1.05fr .95fr; align-items: center; padding-bottom: 96px; } }
+.saludo {
+  display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px;
+  font-size: 14px; font-weight: 600; color: var(--dorado-claro);
+  padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(201, 164, 92, .4); background: rgba(201, 164, 92, .08);
+}
+.hero-noche h1 { font-size: clamp(40px, 7.4vw, 72px); font-weight: 600; letter-spacing: -.01em; margin-bottom: 18px; }
+.hero-noche h1 .oro {
+  background: linear-gradient(100deg, var(--brand-dorado) 20%, #F5E1AE 45%, var(--brand-dorado) 70%);
+  background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: brillo-oro 6s var(--ease-brisa) infinite;
+}
+@keyframes brillo-oro { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
+.hero-noche h1 .coral { color: var(--brand-coral); }
+.bajada { font-size: 18px; margin: 0 0 28px; max-width: 34em; color: rgba(251, 246, 239, .82); }
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; }
+.datos-rapidos { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 28px; font-size: 14px; font-weight: 600; color: rgba(251, 246, 239, .75); }
+
+/* Collage con marcos dorados */
+.hero-visual { position: relative; max-width: 520px; width: 100%; margin: 0 auto; }
+.hero-visual .principal {
+  border-radius: 28px; border: 3px solid var(--brand-dorado); box-shadow: var(--sombra-alta);
+  transform: rotate(1.5deg); transition: transform .8s var(--ease-telar);
+}
+.hero-visual:hover .principal { transform: rotate(0deg) scale(1.01); }
+.hero-visual .mini {
+  position: absolute; right: -6px; top: -22px; width: 36%; border-radius: 18px;
+  border: 3px solid var(--bg-crema); transform: rotate(-6deg); box-shadow: var(--sombra-alta);
+  animation: flotar 7s var(--ease-brisa) infinite alternate;
+}
+@keyframes flotar { from { transform: rotate(-6deg) translateY(0); } to { transform: rotate(-4deg) translateY(-10px); } }
+.sello-rombo {
+  position: absolute; left: -14px; bottom: -26px; width: 128px; height: 128px; display: grid; place-items: center;
+  color: var(--bg-tinta); font-family: var(--font-display); font-weight: 600; font-size: 15px; text-align: center; line-height: 1.05;
+}
+.sello-rombo::before {
+  content: ""; position: absolute; inset: 14px; background: var(--brand-dorado); transform: rotate(45deg);
+  border-radius: 10px; box-shadow: var(--sombra-alta); animation: girar-sello 18s linear infinite;
+}
+.sello-rombo span { position: relative; }
+@keyframes girar-sello { from { transform: rotate(45deg); } to { transform: rotate(405deg); } }
+
+/* ---------- 7. El Telar Vivo: separadores que se tejen solos ---------- */
+.telar { height: 28px; overflow: hidden; background: var(--bg-tinta); }
+.telar.claro { background: transparent; }
+.telar svg { display: block; width: 100%; height: 28px; }
+.telar .rombo {
+  fill: transparent; stroke: var(--brand-dorado); stroke-width: 1.4;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transition: stroke-dashoffset .8s var(--ease-telar) calc(var(--i) * 14ms), fill .5s ease calc(var(--i) * 14ms + .55s);
+}
+.telar.tejido .rombo { stroke-dashoffset: 0; }
+.telar.tejido .rombo.par { fill: var(--brand-dorado); }
+.telar.tejido .rombo.impar { fill: var(--bg-crema); }
+
+/* ---------- 8. Revelado al hacer scroll ---------- */
+[data-revelar] { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease-telar), transform .8s var(--ease-telar); transition-delay: calc(var(--i, 0) * 70ms); }
+[data-revelar].visible { opacity: 1; transform: none; }
+
+/* ---------- 9. Secciones ---------- */
+.seccion { padding: 72px 0; position: relative; }
+.seccion.blanca { background: var(--papel) var(--grano); }
+.seccion.noche { background: var(--bg-tinta); color: var(--bg-crema); }
+.titulo-seccion { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+.titulo-seccion .sup { color: var(--brand-dorado); font-weight: 700; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
+.titulo-seccion h2 { font-size: clamp(32px, 5vw, 46px); color: var(--coral-texto); margin: 8px 0 10px; }
+.seccion.noche .titulo-seccion h2 { color: var(--bg-crema); }
+.titulo-seccion p { margin: 0; color: var(--tinta-suave); }
+.seccion.noche .titulo-seccion p { color: rgba(251, 246, 239, .7); }
+
+/* ---------- 10. Hoy en el patio (especiales según el día) ---------- */
+.especiales { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.especial {
+  position: relative; display: block; text-decoration: none; color: var(--bg-tinta);
+  background: var(--papel); border-radius: var(--radio); padding: 22px 20px 18px; box-shadow: var(--sombra);
+  border: 1.5px solid var(--dorado-suave); overflow: hidden;
+  transition: transform .45s var(--ease-huayno), box-shadow .3s;
+}
+.especial:hover { transform: translateY(-4px) rotate(-.5deg); box-shadow: var(--sombra-alta); }
+.especial h3 { font-size: 21px; margin: 10px 0 4px; }
+.especial .precio { font-family: var(--font-display); font-size: 22px; color: var(--coral-texto); }
+.badge-hoy {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #6B4E12;
+  padding: 5px 12px; border-radius: 999px; position: relative; overflow: hidden;
+  background: linear-gradient(100deg, var(--dorado-suave) 30%, #FFF6DD 50%, var(--dorado-suave) 70%);
+  background-size: 250% 100%; animation: barrido 3.2s var(--ease-brisa) infinite;
+}
+@keyframes barrido { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+.especial::after { /* micro-rombo bordado en la esquina */
+  content: ""; position: absolute; right: 14px; top: 14px; width: 12px; height: 12px;
+  background: var(--brand-dorado); transform: rotate(45deg); border-radius: 2px;
+}
+
+/* ---------- 11. Plato estrella: el menú del día con vapor ---------- */
+.estrella { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 900px) { .estrella { grid-template-columns: .8fr 1.2fr; } }
+.poster-vapor { position: relative; max-width: 380px; margin: 0 auto; }
+.poster { border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra-alta); border: 3px solid var(--brand-dorado); transform: rotate(-1.5deg); }
+.vapor { position: absolute; left: 50%; top: -70px; width: 160px; height: 120px; transform: translateX(-50%); pointer-events: none; z-index: 2; }
+.vapor path {
+  fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; opacity: 0;
+  animation: humear 4.2s var(--ease-brisa) infinite;
+}
+.vapor path:nth-child(2) { animation-delay: 1.4s; animation-duration: 4.8s; }
+.vapor path:nth-child(3) { animation-delay: 2.6s; animation-duration: 4.4s; }
+@keyframes humear {
+  0% { transform: translateY(20px) scaleY(.8); opacity: 0; }
+  30% { opacity: .25; }
+  100% { transform: translateY(-30px) scaleY(1.15); opacity: 0; }
+}
+.vapor.claro path { stroke: var(--bg-tinta); }
+
+.menu-card {
+  position: relative; background: var(--papel); border-radius: var(--radio); box-shadow: var(--sombra-alta);
+  padding: 30px; border-top: 8px solid var(--brand-dorado); color: var(--bg-tinta);
+}
+.menu-card .fecha { font-weight: 700; color: var(--brand-dorado); text-transform: uppercase; letter-spacing: .14em; font-size: 13px; }
+.menu-card h3 { font-size: 32px; margin: 4px 0 20px; }
+.tiempos { display: grid; gap: 18px; }
+@media (min-width: 620px) { .tiempos { grid-template-columns: repeat(3, 1fr); } }
+.tiempos h4 { margin: 0 0 6px; color: var(--coral-texto); font-size: 18px; }
+.tiempos ul { margin: 0; padding: 0; list-style: none; }
+.tiempos li { padding: 7px 0; border-bottom: 1px dashed var(--borde); font-size: 15px; }
+.menu-card .pie { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 24px; }
+.menu-card .precio { font-family: var(--font-display); font-size: 22px; font-weight: 600; }
+
+/* ---------- 12. Categorías ---------- */
+.categorias { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 940px) { .categorias { grid-template-columns: repeat(5, 1fr); } }
+.cat-card {
+  display: block; text-decoration: none; color: var(--bg-tinta); background: var(--papel);
+  border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra);
+  transition: transform .5s var(--ease-huayno), box-shadow .3s;
+}
+.cat-card:hover { transform: translateY(-6px) rotate(-.8deg); box-shadow: var(--sombra-alta); }
+.cat-card .recorte { aspect-ratio: 1; }
+.cat-card .recorte img { transition: transform .8s var(--ease-telar); }
+.cat-card:hover .recorte img { transform: scale(1.06); }
+.cat-card .texto { padding: 12px 14px 16px; }
+.cat-card h3 { font-size: 20px; }
+.cat-card p { margin: 2px 0 0; font-size: 13px; color: var(--tinta-suave); }
+
+/* ---------- 13. Nosotros, galería, ubicación ---------- */
+.nosotros { display: grid; gap: 36px; align-items: center; }
+@media (min-width: 900px) { .nosotros { grid-template-columns: 1fr 1fr; } }
+.nosotros .fotos { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; }
+.nosotros .fotos .recorte { border-radius: var(--radio); box-shadow: var(--sombra); }
+.nosotros .fotos .recorte:nth-child(2) { margin-top: 44px; }
+.nosotros h2 { font-size: clamp(32px, 5vw, 44px); color: var(--coral-texto); margin: 14px 0; }
+.etiqueta { display: inline-block; background: var(--coral-suave); color: var(--coral-texto); font-weight: 700; font-size: 13px; padding: 6px 14px; border-radius: 999px; letter-spacing: .08em; text-transform: uppercase; }
+.cita { font-family: var(--font-display); font-size: 23px; border-left: 5px solid var(--brand-dorado); padding-left: 16px; margin: 22px 0; }
+.valores { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.valores span { background: var(--dorado-suave); color: #6B4E12; font-weight: 700; font-size: 13px; padding: 8px 14px; border-radius: 999px; }
+
+.galeria { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 900px) { .galeria { grid-template-columns: repeat(4, 1fr); } }
+.galeria figure { margin: 0; }
+.galeria .recorte { border-radius: 14px; }
+.galeria .recorte img, .portada .recorte img { transition: transform .9s var(--ease-telar); }
+.galeria figure:hover img { transform: scale(1.05); }
+
+.ubicacion { display: grid; gap: 24px; }
+@media (min-width: 900px) { .ubicacion { grid-template-columns: 1fr 1.1fr; align-items: stretch; } }
+.tarjeta { background: var(--papel); border-radius: var(--radio); padding: 28px; box-shadow: var(--sombra); }
+.tarjeta h3 { font-size: 24px; color: var(--coral-texto); margin-bottom: 12px; }
+.horario { width: 100%; border-collapse: collapse; margin: 8px 0 18px; font-size: 15px; }
+.horario td { padding: 8px 0; border-bottom: 1px dashed var(--borde); }
+.horario td:last-child { text-align: right; font-weight: 700; }
+.horario tr.hoy td { color: var(--coral-texto); }
+.dato { display: flex; gap: 12px; align-items: flex-start; margin: 12px 0; }
+.dato .ico { flex: 0 0 38px; height: 38px; border-radius: 50%; background: var(--coral-suave); display: grid; place-items: center; font-size: 18px; }
+.mapa {
+  min-height: 300px; border-radius: var(--radio); position: relative; overflow: hidden;
+  background: radial-gradient(circle at 30% 30%, var(--dorado-suave), var(--coral-suave));
+  display: grid; place-items: center; text-align: center; padding: 24px; box-shadow: var(--sombra);
+}
+.mapa .pin { font-size: 46px; animation: rebote-pin 2.4s var(--ease-huayno) infinite; }
+@keyframes rebote-pin { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-12px); } }
+.mapa p { margin: 8px 0 16px; color: var(--tinta-suave); }
+
+/* ---------- 14. Pie de página ---------- */
+.pie-pagina { background: var(--bg-tinta); color: var(--bg-crema); padding: 52px 0 30px; text-align: center; position: relative; }
+.pie-pagina .isotipo { width: 96px; height: 96px; margin: 0 auto 14px; border-width: 3px; }
+.pie-pagina .lema { font-family: var(--font-display); font-size: 24px; margin: 0 0 18px; color: var(--dorado-claro); }
+.redes { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 18px 0; }
+.redes a {
+  color: var(--bg-crema); text-decoration: none; font-weight: 700; font-size: 14px; padding: 9px 18px; border-radius: 999px;
+  border: 1px solid rgba(201, 164, 92, .45); transition: background .3s, transform .35s var(--ease-huayno);
+}
+.redes a:hover { background: rgba(201, 164, 92, .15); transform: translateY(-2px); }
+.legal { font-size: 13px; opacity: .85; margin: 18px 0 0; }
+.libro-ref {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; background: var(--bg-crema); color: var(--bg-tinta);
+  border-radius: 10px; padding: 10px 16px; font-size: 13px; font-weight: 700;
+}
+.libro-ref .libro { width: 30px; height: 36px; border-radius: 3px; background: var(--coral-texto); position: relative; }
+.libro-ref .libro::after { content: ""; position: absolute; left: 5px; right: 5px; top: 8px; height: 3px; background: #fff; box-shadow: 0 7px 0 #fff, 0 14px 0 #fff; }
+
+/* ---------- 15. Botón flotante de WhatsApp ---------- */
+.flotante {
+  position: fixed; right: 16px; bottom: 16px; z-index: 45; width: 58px; height: 58px; border-radius: 50%;
+  background: var(--verde-wa); display: grid; place-items: center; box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+  transition: transform .4s var(--ease-huayno);
+}
+.flotante:hover { transform: scale(1.1) rotate(-8deg); }
+.flotante svg { width: 30px; height: 30px; fill: #fff; }
+
+/* ---------- 16. El portal en rombo (index → carta) ---------- */
+.portal-capa {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none; background: var(--brand-coral);
+  --x: 50vw; --y: 50vh;
+  clip-path: polygon(var(--x) calc(var(--y) - var(--r)), calc(var(--x) + var(--r)) var(--y), var(--x) calc(var(--y) + var(--r)), calc(var(--x) - var(--r)) var(--y));
+  transition: --r .5s var(--ease-telar);
+}
+.portal-capa.abrir { --r: 260vmax; }
+/* Al llegar: la capa coral tiene un hueco en rombo que crece y revela la carta */
+.portal-capa.entrada {
+  --r: 0px;
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0,
+    var(--x) calc(var(--y) - var(--r)), calc(var(--x) + var(--r)) var(--y), var(--x) calc(var(--y) + var(--r)), calc(var(--x) - var(--r)) var(--y), var(--x) calc(var(--y) - var(--r)));
+  transition: --r .7s var(--ease-telar) .05s;
+}
+.portal-capa.entrada.revelar { --r: 260vmax; }
+.portal-capa .sello-portal {
+  position: absolute; left: 50%; top: 50%; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%;
+  border: 3px solid var(--brand-dorado); overflow: hidden; background: var(--brand-coral);
+  transition: transform .35s var(--ease-telar), opacity .3s;
+}
+.portal-capa.revelar .sello-portal { transform: scale(.4); opacity: 0; }
+
+/* Flores del patio que brotan en las esquinas al entrar a la carta */
+.flores-portal { position: fixed; bottom: -6px; z-index: 99; width: 150px; pointer-events: none; transform-origin: bottom center; animation: brotar 2.4s var(--ease-huayno) forwards; }
+.flores-portal.izq { left: -10px; }
+.flores-portal.der { right: -10px; transform: scaleX(-1); animation-name: brotar-der; }
+@keyframes brotar {
+  0% { transform: scale(0) rotate(-12deg); opacity: 1; }
+  35% { transform: scale(1) rotate(0deg); opacity: 1; }
+  75% { transform: scale(1) rotate(2deg); opacity: 1; }
+  100% { transform: scale(.9) rotate(0deg); opacity: 0; }
+}
+@keyframes brotar-der {
+  0% { transform: scaleX(-1) scale(0) rotate(-12deg); opacity: 1; }
+  35% { transform: scaleX(-1) scale(1) rotate(0deg); opacity: 1; }
+  75% { transform: scaleX(-1) scale(1) rotate(2deg); opacity: 1; }
+  100% { transform: scaleX(-1) scale(.9); opacity: 0; }
+}
+
+/* ==========================================================
+   La Carta Artesanal (carta.html) · el patio de día
+   ========================================================== */
+
+/* ---------- Portada luminosa ---------- */
+.portada-carta {
+  position: relative; overflow: hidden; color: var(--bg-tinta); text-align: center;
+  background:
+    radial-gradient(ellipse 55% 75% at 88% -10%, rgba(242, 181, 68, .32), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 0% 110%, rgba(238, 108, 94, .18), transparent 70%),
+    var(--bg-crema) var(--grano);
+}
+.guirnalda.dia .cuerda { stroke: rgba(42, 33, 29, .3); }
+.portada-carta .contenedor { position: relative; z-index: 2; padding-top: 6px; padding-bottom: 22px; }
+.portada-carta .saludo { color: #7A5A1E; border-color: rgba(201, 164, 92, .6); background: rgba(255, 255, 255, .65); }
+.portada-carta h1 { font-size: clamp(42px, 8.5vw, 74px); color: var(--coral-texto); letter-spacing: -.01em; }
+.portada-carta h1 small {
+  display: block; margin-bottom: 8px; font-family: var(--font-body); font-size: 12px; font-weight: 700;
+  letter-spacing: .32em; text-transform: uppercase; color: var(--brand-dorado);
+}
+.portada-carta .bajada { color: var(--tinta-suave); font-size: 16px; margin: 12px auto 18px; max-width: 36em; }
+.hoy-toca { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--tinta-suave); }
+.hoy-toca button {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--bg-tinta); cursor: pointer;
+  background: #fff; border: 1.5px solid var(--brand-dorado); border-radius: 999px; padding: 6px 14px;
+  transition: transform .35s var(--ease-huayno), background .2s;
+}
+.hoy-toca button:hover { transform: translateY(-2px); background: var(--dorado-suave); }
+
+/* Ondas coral que fluyen (fieles a la carta impresa) */
+.ondas { display: block; width: 100%; height: 34px; overflow: hidden; }
+.ondas .onda { fill: none; stroke: var(--brand-coral); stroke-width: 2; animation: ondear 9s linear infinite; }
+.ondas .onda-1 { animation-duration: 12s; opacity: .7; }
+.ondas .onda-2 { animation-duration: 15s; opacity: .45; }
+@keyframes ondear { from { transform: translateX(0); } to { transform: translateX(-80px); } }
+
+/* ---------- Herramientas: buscador y filtros ---------- */
+.herramientas {
+  position: sticky; top: 66px; z-index: 20; padding: 12px 0 2px;
+  background: rgba(251, 246, 239, .92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--borde);
+}
+.caja-busqueda { position: relative; }
+.caja-busqueda .lupa { position: absolute; left: 16px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); stroke: var(--tinta-suave); fill: none; stroke-width: 2; pointer-events: none; }
+.buscador {
+  width: 100%; padding: 13px 46px 13px 44px; border-radius: 999px; border: 1.5px solid var(--borde);
+  font-size: 16px; font-family: var(--font-body); background: var(--papel); color: var(--bg-tinta);
+  transition: border-color .2s, box-shadow .3s var(--ease-telar);
+}
+.buscador:focus { outline: none; border-color: var(--brand-coral); box-shadow: 0 0 0 5px var(--coral-suave); }
+.buscador::-webkit-search-cancel-button { display: none; }
+.limpiar {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%;
+  border: 0; background: var(--coral-suave); color: var(--coral-texto); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 2px 10px; scrollbar-width: none; scroll-behavior: smooth; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: 0 0 auto; display: inline-flex; align-items: center; cursor: pointer;
+  border: 1.5px solid var(--borde); background: var(--papel); color: var(--bg-tinta);
+  border-radius: 999px; padding: 7px 15px; font-size: 14px; font-weight: 600; font-family: var(--font-body);
+  transition: transform .35s var(--ease-huayno), background .25s, color .25s, border-color .25s;
+}
+.chip::before { /* el rombo que marca el filtro activo */
+  content: ""; width: 0; height: 8px; margin-right: 0; background: #fff; border-radius: 1px;
+  transform: rotate(45deg) scale(0); transition: width .3s var(--ease-huayno), margin .3s var(--ease-huayno), transform .45s var(--ease-huayno);
+}
+.chip:hover { border-color: var(--brand-coral); transform: translateY(-2px); }
+.chip[aria-pressed="true"] { background: var(--brand-coral); border-color: var(--brand-coral); color: #fff; }
+.chip[aria-pressed="true"]::before { width: 8px; margin-right: 9px; transform: rotate(45deg) scale(1); }
+.chip .n { margin-left: 6px; font-size: 12px; opacity: .65; }
+.conteo { font-size: 13px; color: var(--tinta-suave); margin: 0 0 8px; min-height: 20px; }
+.conteo strong { color: var(--coral-texto); }
+
+/* ---------- Distribución ---------- */
+.carta-layout { display: grid; gap: 28px; padding-top: 12px; padding-bottom: 110px; }
+@media (min-width: 1000px) { .carta-layout { grid-template-columns: minmax(0, 1fr) 380px; align-items: start; padding-bottom: 56px; } }
+
+/* Cabecera de cada sección */
+.cat-cabecera { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 6px 0 14px; }
+.cat-cabecera h2 { font-size: clamp(28px, 4vw, 36px); color: var(--coral-texto); display: flex; align-items: center; gap: 10px; }
+.cat-cabecera h2 .emoji { font-size: .8em; }
+.cat-cabecera p { margin: 2px 0 0; font-size: 14px; color: var(--tinta-suave); }
+.cat-cabecera .cuenta { flex-shrink: 0; font-size: 12px; font-weight: 700; color: #7A5A1E; background: var(--dorado-suave); padding: 4px 10px; border-radius: 999px; }
+.cat-cabecera.hoy h2 { color: var(--bg-tinta); }
+.lista-carta .telar { margin: 30px 0 22px; }
+
+.grilla { display: grid; gap: 14px; }
+@media (min-width: 640px) { .grilla { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Tarjeta de plato con bordado ---------- */
+.plato {
+  position: relative; display: flex; flex-direction: column; gap: 6px;
+  background: var(--papel); border-radius: 16px; padding: 18px 18px 16px;
+  border: 1px solid rgba(234, 223, 211, .8); box-shadow: 0 8px 24px -4px rgba(42, 33, 29, .08);
+  transition: transform .45s var(--ease-huayno), box-shadow .3s, opacity .8s var(--ease-telar);
+}
+.plato.encima { transform: translateY(-3px); box-shadow: 0 16px 32px -10px rgba(42, 33, 29, .2); }
+.plato::after { content: ""; position: absolute; right: 14px; top: 14px; width: 9px; height: 9px; background: var(--brand-dorado); transform: rotate(45deg); border-radius: 1px; }
+.plato h3 { font-size: 19px; padding-right: 24px; }
+.plato mark { background: linear-gradient(transparent 55%, rgba(242, 181, 68, .55) 55%); color: inherit; padding: 0 1px; border-radius: 2px; }
+.plato .desc { margin: 0; font-size: 14px; color: var(--tinta-suave); }
+.plato .fila { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 10px; }
+.plato .grupo-precio { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.precio-item { font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--bg-tinta); }
+.plato select {
+  padding: 7px 28px 7px 10px; border-radius: 10px; border: 1.5px solid var(--borde); font-size: 14px; font-family: var(--font-body);
+  color: var(--bg-tinta); background-color: var(--bg-crema); appearance: none; -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--tinta-suave) 50%), linear-gradient(135deg, var(--tinta-suave) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%; background-size: 5px 5px; background-repeat: no-repeat;
+}
+
+/* Revelado escalonado de tarjetas: suben 20 px con 50 ms entre cada una */
+.plato[data-revelar] { transition-delay: calc(var(--i, 0) * 50ms); }
+.plato[data-revelar]:not(.visible) { transform: translateY(20px); }
+.plato[data-revelar].visible.encima { transition-delay: 0s; }
+
+/* Especial de hoy: marco dorado */
+.plato.especial-hoy { border: 1.5px solid var(--brand-dorado); background: linear-gradient(180deg, #FFFAEE, #fff 60%); }
+.plato.especial-hoy::after { width: 11px; height: 11px; box-shadow: 0 0 0 4px rgba(201, 164, 92, .2); }
+.plato .badge-hoy { align-self: flex-start; }
+/* No toca hoy: se ve, pero en reposo */
+.plato.no-hoy { background: #F6EFE7; box-shadow: none; }
+.plato.no-hoy h3, .plato.no-hoy .precio-item { opacity: .6; }
+.etiqueta-dias { align-self: flex-start; font-size: 12px; font-weight: 700; color: #8A4E3B; background: #F2E2D6; padding: 3px 10px; border-radius: 999px; }
+.plato.resaltado { animation: resaltar 1.8s var(--ease-telar); }
+@keyframes resaltar {
+  0% { box-shadow: 0 0 0 0 rgba(201, 164, 92, .9); }
+  100% { box-shadow: 0 0 0 22px rgba(201, 164, 92, 0); }
+}
+
+/* Plato estrella (menú del día) dentro de la carta */
+.plato.destacado { grid-column: 1 / -1; border: 1.5px solid var(--brand-dorado); background: linear-gradient(120deg, var(--dorado-suave), #FFFCF5 70%); }
+.plato.destacado h3 { font-size: 24px; }
+
+/* Vapor mini para sopas y menú del día */
+.vapor-mini { position: absolute; right: 34px; top: -18px; width: 44px; height: 38px; pointer-events: none; overflow: visible; }
+.vapor-mini path { fill: none; stroke: var(--brand-coral); stroke-width: 3; stroke-linecap: round; opacity: 0; animation: humear 4.2s var(--ease-brisa) infinite; }
+.vapor-mini path:nth-child(2) { animation-delay: 1.4s; animation-duration: 4.8s; }
+.vapor-mini path:nth-child(3) { animation-delay: 2.6s; animation-duration: 4.4s; }
+
+/* Botón agregar */
+.btn-agregar {
+  flex: 0 0 auto; background: var(--brand-coral); color: #fff; border: 0; border-radius: 999px;
+  padding: 10px 18px; font-weight: 700; cursor: pointer; font-family: var(--font-body); font-size: 14px; text-decoration: none;
+  transition: transform .35s var(--ease-huayno), background .2s;
+}
+.btn-agregar:hover { background: var(--coral-oscuro); transform: scale(1.06); }
+.btn-agregar:active { transform: scale(.94); }
+.btn-agregar:disabled { background: #D9CEC4; color: #6B5D55; cursor: not-allowed; transform: none; }
+
+/* Sin resultados */
+.sin-resultados { text-align: center; padding: 48px 16px; }
+.sin-resultados .llama { width: 84px; height: 84px; margin: 0 auto; border-radius: 50%; border: 3px solid var(--brand-dorado); animation: flotar-llama 3s var(--ease-brisa) infinite alternate; }
+@keyframes flotar-llama { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-8px) rotate(6deg); } }
+.sin-resultados h3 { font-size: 24px; margin: 14px 0 6px; }
+.sin-resultados p { margin: 0; color: var(--tinta-suave); }
+.sin-resultados .sugerencias { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+.sin-resultados button { font-family: var(--font-body); font-weight: 600; font-size: 14px; border: 1.5px solid var(--brand-coral); color: var(--coral-texto); background: #fff; border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+
+/* ---------- Panel del pedido ---------- */
+.pedido {
+  background: var(--papel); border-radius: var(--radio); box-shadow: 0 16px 40px -12px rgba(42, 33, 29, .18); padding: 22px;
+  border-top: 8px solid var(--brand-coral); position: relative;
+}
+@media (min-width: 1000px) { .pedido { position: sticky; top: 176px; max-height: calc(100vh - 192px); overflow-y: auto; } }
+.pedido h2 { font-size: 28px; margin-bottom: 6px; }
+.vacio { color: var(--tinta-suave); font-style: italic; }
+.linea { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; padding: 12px 0; border-bottom: 1px dashed var(--borde); align-items: center; }
+.linea strong { font-size: 14px; }
+.linea small { color: var(--tinta-suave); font-weight: 600; }
+.linea input { grid-column: 1 / -1; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--borde); font-size: 14px; font-family: var(--font-body); background: var(--bg-crema); color: var(--bg-tinta); }
+.controles { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.controles button { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--brand-coral); background: #fff; color: var(--coral-texto); font-size: 16px; line-height: 1; cursor: pointer; transition: transform .3s var(--ease-huayno); }
+.controles button:hover { transform: scale(1.12); }
+.resumen { margin: 14px 0 4px; }
+.resumen .fila-resumen { display: flex; justify-content: space-between; padding: 3px 0; font-size: 15px; }
+.resumen .total { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--coral-texto); border-top: 2px solid var(--borde); margin-top: 6px; padding-top: 8px; }
+.campo { display: flex; flex-direction: column; gap: 5px; margin-top: 14px; }
+.campo > label, .campo .rotulo { font-size: 14px; font-weight: 700; }
+.campo input[type="text"], .campo input[type="number"] {
+  padding: 11px 13px; border-radius: 12px; border: 1.5px solid var(--borde); font-size: 16px; font-family: var(--font-body);
+  background: var(--papel); color: var(--bg-tinta);
+}
+.campo input:focus { outline: none; border-color: var(--brand-coral); box-shadow: 0 0 0 4px var(--coral-suave); }
+.segmentado { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; background: var(--bg-crema); padding: 4px; border-radius: 12px; }
+.segmentado label { position: relative; text-align: center; padding: 9px 6px; border-radius: 9px; cursor: pointer; font-size: 14px; font-weight: 600; transition: background .25s, color .25s; }
+.segmentado input { position: absolute; opacity: 0; pointer-events: none; }
+.segmentado label:has(input:checked) { background: var(--brand-coral); color: #fff; }
+.segmentado label:has(input:focus-visible) { outline: 2px solid var(--coral-oscuro); }
+.consentimiento { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; margin-top: 16px; color: var(--tinta-suave); }
+
+/* Barra inferior del carrito (móvil) */
+.barra-carrito {
+  position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 35; display: none;
+  background: var(--bg-tinta); color: #fff; border-radius: 18px; padding: 12px 14px 12px 18px;
+  align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 14px 34px rgba(0, 0, 0, .35); text-decoration: none;
+  border: 1px solid rgba(201, 164, 92, .4);
+}
+.barra-carrito.visible { display: flex; animation: aparecer-barra .5s var(--ease-huayno); }
+@keyframes aparecer-barra { from { transform: translateY(120%); } to { transform: none; } }
+.barra-carrito .cuenta { font-weight: 700; font-size: 14px; }
+.barra-carrito .total-barra { font-family: var(--font-display); font-size: 20px; color: var(--dorado-claro); }
+@media (min-width: 1000px) { .barra-carrito.visible { display: none; } }
+.toast {
+  position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%); z-index: 50;
+  background: var(--bg-tinta); color: #fff; padding: 12px 20px; border-radius: 999px; border: 1px solid rgba(201, 164, 92, .5);
+  font-size: 14px; font-weight: 600; max-width: 90vw; text-align: center; display: none;
+}
+.toast.visible { display: block; animation: aparecer-toast .4s var(--ease-huayno); }
+@keyframes aparecer-toast { from { transform: translate(-50%, 16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* ==========================================================
+   La Olla de Pedidos (Entrega 3)
+   ========================================================== */
+
+/* "+ Agregar" → "¡A la mesa!" con rebote huayno */
+.btn-agregar.a-la-mesa { background: var(--brand-dorado); color: var(--bg-tinta); animation: a-la-mesa .6s var(--ease-huayno); }
+@keyframes a-la-mesa { 0% { transform: scale(.85); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
+/* La chispa dorada que vuela en parábola hasta el carrito (la mueve carta.js con Web Animations) */
+.chispa {
+  position: fixed; left: 0; top: 0; z-index: 90; width: 16px; height: 16px; pointer-events: none;
+  background: var(--brand-dorado); border-radius: 3px; box-shadow: 0 0 0 3px rgba(201, 164, 92, .3), 0 0 16px rgba(242, 181, 68, .9);
+  will-change: transform, opacity;
+}
+
+/* Impacto: la olla se sacude y el contador salta */
+.sacude { animation: shake-olla .55s var(--ease-huayno); }
+@keyframes shake-olla {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-9deg) scale(1.08); }
+  40% { transform: rotate(7deg) scale(1.08); }
+  60% { transform: rotate(-4deg); }
+  80% { transform: rotate(2deg); }
+}
+.contador { display: inline-block; }
+.contador.salta { animation: salto-contador .5s var(--ease-huayno); }
+@keyframes salto-contador { 0% { transform: translateY(0); } 40% { transform: translateY(-9px) scale(1.3); color: var(--dorado-claro); } 100% { transform: translateY(0); } }
+
+/* Línea nueva del pedido y cantidad que cambia */
+.linea.nueva { animation: linea-nueva .55s var(--ease-huayno); }
+@keyframes linea-nueva { from { opacity: 0; transform: translateX(18px) scale(.97); } to { opacity: 1; transform: none; } }
+.controles .cant.cambia { animation: salto-contador .45s var(--ease-huayno); }
+
+/* Maridaje: sugerencia de bebida, sin interrumpir */
+.maridaje {
+  position: relative; margin: 14px 0 4px; padding: 14px 14px 12px; border-radius: 14px;
+  border: 1.5px dashed var(--brand-dorado); background: linear-gradient(120deg, #FFFAEE, var(--dorado-suave));
+  animation: linea-nueva .6s var(--ease-huayno);
+}
+.maridaje p { margin: 0 26px 10px 0; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.maridaje .opciones-bebida { display: flex; flex-wrap: wrap; gap: 8px; }
+.maridaje .opciones-bebida button {
+  font-family: var(--font-body); font-size: 13px; font-weight: 700; cursor: pointer; border-radius: 999px; padding: 7px 12px;
+  border: 1.5px solid var(--brand-coral); background: #fff; color: var(--coral-texto); transition: transform .3s var(--ease-huayno), background .2s;
+}
+.maridaje .opciones-bebida button:hover { transform: translateY(-2px); background: var(--coral-suave); }
+.maridaje .cerrar { position: absolute; right: 8px; top: 8px; width: 26px; height: 26px; border: 0; border-radius: 50%; background: rgba(42, 33, 29, .08); color: var(--bg-tinta); cursor: pointer; font-size: 16px; line-height: 1; }
+
+/* Validación visible */
+.campo.error input, .consentimiento.error { border-color: var(--brand-coral); }
+.campo.error input { box-shadow: 0 0 0 4px var(--coral-suave); }
+.consentimiento.error { color: var(--coral-texto); font-weight: 700; }
+.error { animation: temblor .42s var(--ease-brisa); }
+@keyframes temblor { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+
+/* La fiesta: confeti andino antes de ir a WhatsApp */
+.fiesta {
+  position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(42, 33, 29, .55), rgba(42, 33, 29, .78));
+  animation: fiesta-entra .3s ease;
+}
+@keyframes fiesta-entra { from { opacity: 0; } to { opacity: 1; } }
+.fiesta .mensaje {
+  position: relative; z-index: 2; text-align: center; color: var(--bg-crema); padding: 26px 28px; max-width: 320px;
+  background: var(--bg-tinta); border: 2px solid var(--brand-dorado); border-radius: 22px; box-shadow: var(--sombra-alta);
+  animation: a-la-mesa .7s var(--ease-huayno);
+}
+.fiesta .mensaje .fuego { font-size: 40px; display: block; animation: flotar-llama 1s var(--ease-brisa) infinite alternate; }
+.fiesta .mensaje strong { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1.15; margin: 8px 0 6px; color: var(--dorado-claro); }
+.fiesta .mensaje span { font-size: 14px; opacity: .85; }
+.confeti { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; will-change: transform, opacity; }
+.confeti.rombo { transform: rotate(45deg); border-radius: 2px; }
+.confeti.flor { width: 8px; height: 8px; border-radius: 50%; }
+.confeti.flor::before { /* cinco pétalos alrededor del centro */
+  content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; filter: brightness(1.1);
+  box-shadow: 0 -7px 0 currentColor, 6.6px -2.2px 0 currentColor, 4.1px 5.7px 0 currentColor, -4.1px 5.7px 0 currentColor, -6.6px -2.2px 0 currentColor;
+}
+
+/* ==========================================================
+   Escena viva del inicio: La Llama Guardiana y el Valle de Oro
+   ========================================================== */
+.escena { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; --px: 0; --py: 0; }
+.guardiana {
+  position: absolute; bottom: -6px; left: 50%; width: 360px; max-width: none;
+  transform: translate(calc(-50% + var(--px) * -6px), calc(var(--py) * -5px));
+  transition: transform .5s var(--ease-telar);
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+@media (min-width: 940px) { .guardiana { width: 620px; left: 33%; } }
+/* Velo de tinta detrás del texto del hero: la escena se ve alrededor, pero nunca compite con la lectura */
+.hero-grid > div:first-child { position: relative; }
+.hero-grid > div:first-child::before {
+  content: ""; position: absolute; inset: -48px -70px -48px -90px; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 72% 68% at 42% 52%, rgba(42, 33, 29, .92) 0%, rgba(42, 33, 29, .7) 55%, rgba(42, 33, 29, 0) 82%);
+}
+/* Bordes que se funden con la noche: la escena no termina en un corte */
+.guardiana { -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+.guardiana .grabado { stroke: var(--brand-dorado); stroke-width: 2; opacity: .3; }
+.guardiana .silueta { fill: var(--bg-tinta); stroke: none; }
+.llama-cuerpo .grabado { opacity: .42; }
+.guardiana .acento { stroke: var(--brand-coral); stroke-width: 2.2; opacity: .5; }
+.guardiana .relleno-coral { fill: var(--brand-coral); stroke: none; opacity: .35; }
+.guardiana .relleno-oro { fill: var(--brand-dorado); stroke: none; opacity: .4; }
+
+/* Inti: el sol gira muy despacio y se mueve al revés del mouse */
+.inti { transform: translate(calc(var(--px) * 10px), calc(var(--py) * 8px)); transition: transform .6s var(--ease-telar); }
+.inti .rayos { transform-box: fill-box; transform-origin: center; animation: spin 90s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* La cordillera: un brillo dorado recorre sus líneas */
+.cordillera .brillo { stroke: url(#oro-cordillera); stroke-width: 3; stroke-dasharray: 90 910; stroke-dashoffset: 1000; opacity: .9; animation: recorrer 7s linear infinite; }
+.cordillera .brillo.b2 { animation-duration: 9.5s; animation-delay: -4s; }
+@keyframes recorrer { to { stroke-dashoffset: 0; } }
+
+/* La llama respira; orejas y sombrero siguen al mouse (o al scroll en celular) */
+.llama-cuerpo { transform-box: fill-box; transform-origin: 50% 100%; animation: respirar 4s var(--ease-brisa) infinite alternate; }
+@keyframes respirar { from { transform: scaleY(1); } to { transform: scaleY(1.02); } }
+.orejas { transform-box: fill-box; transform-origin: 50% 100%; transform: translate(calc(var(--px) * 12px), calc(var(--py) * -6px)) rotate(calc(var(--px) * 7deg)); transition: transform .35s var(--ease-telar); }
+.sombrero { transform-box: fill-box; transform-origin: 50% 80%; transform: translate(calc(var(--px) * 8px), calc(var(--py) * -4px)) rotate(calc(var(--px) * 3deg)); transition: transform .45s var(--ease-telar); }
+.retama .flor { transform-box: fill-box; transform-origin: 50% 100%; animation: brisa 5.3s var(--ease-brisa) infinite alternate; }
+.retama .flor:nth-child(2n) { animation-duration: 6.7s; animation-direction: alternate-reverse; }
+
+/* Lluvia de pétalos de retama, geranios y micro-chakanas */
+.lluvia { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; perspective: 600px; }
+.petalo { position: absolute; top: -40px; left: var(--x); animation: caer var(--d) linear var(--retraso) infinite; will-change: transform; }
+@keyframes caer {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--deriva), 170vh, 0); }
+}
+.vaiven { display: block; animation: vaiven var(--v) var(--ease-brisa) infinite alternate; }
+@keyframes vaiven { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+.hoja { display: block; width: var(--t); height: calc(var(--t) * .62); animation: girar3d var(--g) linear infinite; }
+@keyframes girar3d { from { transform: rotateX(0) rotateY(0) rotateZ(0); } to { transform: rotateX(360deg) rotateY(180deg) rotateZ(240deg); } }
+.hoja.retama-p { background: linear-gradient(135deg, #E6CC92, #C9A45C); border-radius: 80% 0 80% 0; opacity: .8; }
+.hoja.geranio { background: linear-gradient(135deg, #F49A8C, #EE6C5E); border-radius: 50% 50% 50% 0; opacity: .75; }
+.hoja.chakana { width: calc(var(--t) * .7); height: calc(var(--t) * .7); border: 1.5px solid var(--dorado-claro); border-radius: 2px; opacity: .7; }
+
+/* Saludo sin emojis: un rombo dorado lo antecede */
+.saludo::before { content: ""; width: 8px; height: 8px; flex-shrink: 0; background: var(--brand-dorado); transform: rotate(45deg); border-radius: 1px; }
+
+/* ==========================================================
+   Carta: tarjetas "Retablo" con ilustración reactiva
+   ========================================================== */
+:root {
+  /* Grecas escalonadas para las 4 esquinas del marco interior */
+  --greca-si: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23C9A45C' stroke-width='1.4'><path d='M1 17V1h16M5 17V5h8v4H9v8'/></svg>");
+  --greca-sd: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23C9A45C' stroke-width='1.4'><path d='M17 17V1H1M13 17V5H5v4h4v8'/></svg>");
+  --greca-ii: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23C9A45C' stroke-width='1.4'><path d='M1 1v16h16M5 1v12h8V9H9V1'/></svg>");
+  --greca-id: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23C9A45C' stroke-width='1.4'><path d='M17 1v16H1M13 1v12H5V9h4V1'/></svg>");
+  --rombos-titulo: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='46' height='10'><path d='M5 0l5 5-5 5-5-5z' fill='%23C9A45C'/><path d='M23 0l5 5-5 5-5-5z' fill='%23EE6C5E'/><path d='M41 0l5 5-5 5-5-5z' fill='%23C9A45C'/></svg>");
+  --papel-retablo: linear-gradient(135deg, #FFFDF9 0%, #F7EFE2 100%);
+  /* Muescas de boleto a mitad de los lados */
+  --muescas: radial-gradient(circle at 0 50%, var(--bg-crema) 7px, transparent 7.5px), radial-gradient(circle at 100% 50%, var(--bg-crema) 7px, transparent 7.5px);
+}
+
+.plato {
+  min-height: 172px; padding: 20px 18px 16px 26px; border-radius: 16px; overflow: hidden; isolation: isolate;
+  border: 1px solid #E5D5BC;
+  background: var(--muescas), var(--papel-retablo);
+  box-shadow: inset 6px 0 0 var(--brand-coral), 0 8px 24px -6px rgba(42, 33, 29, .1);
+  transition: transform .45s var(--ease-huayno), box-shadow .4s var(--ease-telar), opacity .8s var(--ease-telar);
+  cursor: default;
+}
+.plato::before {   /* marco interior punteado con grecas en las esquinas */
+  content: ""; position: absolute; inset: 6px 6px 6px 12px; border: 1px dashed rgba(201, 164, 92, .5); border-radius: 11px; pointer-events: none; z-index: 0;
+  background: var(--greca-si) top 3px left 3px / 14px no-repeat, var(--greca-sd) top 3px right 3px / 14px no-repeat,
+    var(--greca-ii) bottom 3px left 3px / 14px no-repeat, var(--greca-id) bottom 3px right 3px / 14px no-repeat;
+}
+.plato::after, .plato.especial-hoy::after { content: none; }
+.plato > *:not(.ilus) { position: relative; z-index: 1; }
+.plato h3, .plato .badge-hoy, .plato .etiqueta-dias, .plato .desc { margin-right: 92px; }
+.plato h3 { padding-right: 0; }
+
+/* La ilustración: en reposo es un sello de agua; al activar la tarjeta cobra vida */
+.ilus {
+  position: absolute; right: 12px; top: 14px; width: 100px; height: 100px; z-index: 0; pointer-events: none;
+  opacity: .14; transform: scale(.88) rotate(-6deg); filter: grayscale(.4);
+  transition: opacity .5s var(--ease-telar), transform .7s var(--ease-huayno), filter .5s;
+}
+.ilus svg { width: 100%; height: 100%; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ilus .tr { stroke: var(--brand-dorado); stroke-width: 2.4; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.ilus .ac { stroke: var(--brand-coral); stroke-width: 2.2; fill: rgba(238, 108, 94, .18); }
+.ilus .vp, .ilus .bb { stroke: var(--brand-dorado); stroke-width: 2.2; }
+.ilus .vp { opacity: 0; animation: humear 3.6s var(--ease-brisa) infinite; }
+.ilus .vp:nth-child(2) { animation-delay: 1.2s; }
+.ilus .vp:nth-child(3) { animation-delay: 2.4s; }
+.ilus .fuego path { transform-box: fill-box; transform-origin: 50% 100%; animation: llama-baila .9s var(--ease-brisa) infinite alternate; }
+.ilus .fuego path:nth-child(2) { animation-duration: .7s; }
+.ilus .fuego path:nth-child(3) { animation-duration: 1.1s; }
+@keyframes llama-baila { from { transform: scaleY(.85) skewX(-4deg); } to { transform: scaleY(1.15) skewX(4deg); } }
+.ilus .hielo { transform-box: fill-box; animation: flotar-hielo 2.2s var(--ease-brisa) infinite alternate; }
+@keyframes flotar-hielo { from { transform: translateY(2px) rotate(-3deg); } to { transform: translateY(-4px) rotate(3deg); } }
+.ilus .bb { animation: burbujear 2.4s ease-in infinite; }
+.ilus .bb:nth-child(2) { animation-delay: .8s; }
+.ilus .bb:nth-child(3) { animation-delay: 1.6s; }
+@keyframes burbujear { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+.ilus .gira { transform-box: fill-box; transform-origin: center; animation: girar-suave 6s var(--ease-brisa) infinite alternate; }
+@keyframes girar-suave { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+.ilus .chispas circle { transform-box: fill-box; transform-origin: center; animation: chispear 1.4s var(--ease-brisa) infinite alternate; }
+.ilus .chispas circle:nth-child(2n) { animation-delay: .5s; }
+@keyframes chispear { from { opacity: .2; transform: scale(.6) translateY(4px); } to { opacity: 1; transform: scale(1.3) translateY(-4px); } }
+/* En reposo las partes vivas están quietas */
+.ilus .vp, .ilus .fuego path, .ilus .hielo, .ilus .bb, .ilus .gira, .ilus .chispas circle { animation-play-state: paused; }
+
+/* Tarjeta activa: hover en escritorio, foco con teclado o toque en celular (.viva) */
+.plato.encima, .plato:focus-within, .plato.viva {
+  transform: translateY(-5px);
+  background: var(--muescas), radial-gradient(circle at 85% 28%, rgba(242, 181, 68, .28), transparent 60%), var(--papel-retablo);
+  box-shadow: inset 10px 0 0 var(--brand-coral), 0 20px 38px -14px rgba(238, 108, 94, .45), 0 0 0 1px rgba(201, 164, 92, .55);
+}
+.plato.encima .ilus, .plato:focus-within .ilus, .plato.viva .ilus { opacity: .95; transform: scale(1.08) rotate(0deg); filter: none; }
+.plato.encima .ilus .tr, .plato:focus-within .ilus .tr, .plato.viva .ilus .tr { animation: dibujar-trazo 1s var(--ease-telar); }
+@keyframes dibujar-trazo { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.plato.encima .ilus *, .plato:focus-within .ilus *, .plato.viva .ilus * { animation-play-state: running; }
+.plato.encima .precio-item, .plato:focus-within .precio-item, .plato.viva .precio-item {
+  background: linear-gradient(90deg, var(--brand-dorado) 55%, transparent 55%) left bottom / 9px 2px repeat-x; padding-bottom: 2px;
+}
+.plato.encima .btn-agregar:not(:disabled), .plato.viva .btn-agregar:not(:disabled) { animation: latido-boton 1.3s var(--ease-brisa) infinite; }
+@keyframes latido-boton { 0%, 100% { box-shadow: 0 0 0 0 rgba(238, 108, 94, .5); } 60% { box-shadow: 0 0 0 9px rgba(238, 108, 94, 0); } }
+
+.plato.especial-hoy { box-shadow: inset 6px 0 0 var(--brand-dorado), 0 0 0 1.5px var(--brand-dorado), 0 8px 24px -6px rgba(201, 164, 92, .3); background: var(--muescas), linear-gradient(135deg, #FFFAEE 0%, #F7EAD0 100%); }
+.plato.especial-hoy.encima, .plato.especial-hoy.viva { box-shadow: inset 10px 0 0 var(--brand-dorado), 0 0 0 1.5px var(--brand-dorado), 0 20px 38px -14px rgba(201, 164, 92, .55); }
+.plato.no-hoy { background: var(--muescas), linear-gradient(135deg, #F7F1EA, #EFE5D9); box-shadow: inset 6px 0 0 #CDBFAF; }
+.plato.destacado { min-height: 190px; }
+.plato.destacado .desc, .plato.destacado h3 { margin-right: 120px; }
+.plato.destacado .ilus { width: 120px; height: 120px; }
+
+/* Etiquetas sin emojis */
+.badge-hoy::before, .etiqueta-dias::before { content: ""; width: 7px; height: 7px; background: currentColor; transform: rotate(45deg); border-radius: 1px; flex-shrink: 0; }
+.etiqueta-dias { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Íconos SVG de sección con greca de rombos a los lados */
+.icono { width: 1em; height: 1em; fill: none; stroke: var(--brand-dorado); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.cat-cabecera h2 .icono { width: .95em; height: .95em; stroke: var(--brand-coral); stroke-width: 1.7; }
+.cat-cabecera h2::before, .cat-cabecera h2::after { content: ""; width: 46px; height: 10px; flex-shrink: 0; background: var(--rombos-titulo) center / contain no-repeat; }
+@media (max-width: 520px) { .cat-cabecera h2::before { display: none; } .cat-cabecera h2::after { width: 30px; } }
+.cat-cabecera.hoy h2 .icono { stroke: var(--brand-dorado); }
+.hoy-toca .icono { width: 18px; height: 18px; stroke: var(--brand-dorado); }
+.hoy-toca > span { display: inline-flex; align-items: center; gap: 6px; }
+.fiesta .mensaje .fuego svg { width: 46px; height: 46px; fill: rgba(238, 108, 94, .25); stroke: var(--brand-coral); stroke-width: 1.6; }
+
+/* Micro-íconos del inicio (reemplazan los emojis): trazo dorado con acento coral */
+.micro { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: var(--brand-dorado); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.micro .ac { stroke: var(--brand-coral); }
+.datos-rapidos span { display: inline-flex; align-items: center; gap: 8px; }
+.dato .ico .micro { width: 20px; height: 20px; }
+.mapa .pin { line-height: 0; }
+.mapa .pin .micro { width: 54px; height: 54px; stroke-width: 1.5; }
+
+/* ==========================================================
+   Inmersión en el local real: buganvillas, verbena, mural, baldosas y lirios
+   (referencias: entrada con buganvillas, fachada nocturna, salón con mural de nevados)
+   ========================================================== */
+:root {
+  --buganvilla: #D91485;
+  --buganvilla-claro: #FF2A9D;
+  --buganvilla-oscuro: #A80F66;
+  --hoja: #3E6B35;
+  --rio: #2E5C8A;
+  --nevado: #E8EEF5;
+  --foco: #FFD27A;
+  /* Baldosa hidráulica (piso del salón): trama muy tenue para el fondo de la carta */
+  --baldosa: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><g fill='none' stroke='%237A4E2D' stroke-width='1.4' opacity='.07'><rect x='1' y='1' width='62' height='62'/><path d='M32 4 L60 32 L32 60 L4 32 Z'/><circle cx='0' cy='0' r='12'/><circle cx='64' cy='0' r='12'/><circle cx='0' cy='64' r='12'/><circle cx='64' cy='64' r='12'/><path d='M32 20 C38 26 38 38 32 44 C26 38 26 26 32 20 Z M20 32 C26 26 38 26 44 32 C38 38 26 38 20 32 Z'/></g><g fill='%23B07A3A' opacity='.06'><circle cx='32' cy='32' r='3'/><path d='M32 4 l3 4 -3 4 -3 -4z M60 32 l-4 3 -4 -3 4 -3z M32 60 l-3 -4 3 -4 3 4z M4 32 l4 -3 4 3 -4 3z'/></g></svg>");
+}
+
+/* ---------- Fotos reales (sin recorte) ---------- */
+.foto-real { overflow: hidden; background: var(--tinta-2); }
+.foto-real img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .9s var(--ease-telar); }
+.hero-visual .mini.foto-real { aspect-ratio: 4 / 5; }
+.nosotros .fotos .foto-real { border-radius: var(--radio); box-shadow: var(--sombra); aspect-ratio: 3 / 4; }
+.nosotros .fotos .foto-real:nth-child(2) { margin-top: 44px; }
+.galeria .foto-real { border-radius: 14px; aspect-ratio: 4 / 5; }
+.galeria figure:hover .foto-real img { transform: scale(1.05); }
+
+/* ---------- Mural andino de fondo (nevados, río, pradera, flores silvestres) ---------- */
+.mural { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mural .lejos { transform: translateX(calc(var(--px) * -6px)); transition: transform .6s var(--ease-telar); }
+.mural .cerca { transform: translateX(calc(var(--px) * -14px)); transition: transform .5s var(--ease-telar); }
+.mural .brillo { fill: none; }
+.mural .agua { fill: none; stroke: #8FBCE6; stroke-width: 1.6; opacity: .28; stroke-dasharray: 18 26; animation: correr-agua 6s linear infinite; }
+@keyframes correr-agua { to { stroke-dashoffset: -88; } }
+.mural .flor-mural { transform-box: fill-box; transform-origin: 50% 100%; animation: brisa 5.5s var(--ease-brisa) infinite alternate; }
+.mural .flor-mural:nth-child(3n) { animation-duration: 6.8s; animation-direction: alternate-reverse; }
+
+/* ---------- Buganvillas fucsias que cuelgan del techo del patio ---------- */
+.buganvillas { position: absolute; left: 0; top: 0; width: 100%; height: 110px; z-index: 3; pointer-events: none; }
+@media (min-width: 900px) { .buganvillas { height: 150px; } }
+.buganvillas .rama { transform-box: fill-box; transform-origin: 50% 0; }
+.buganvillas .rama.brisa-lenta { animation: brisa 6.1s var(--ease-brisa) infinite alternate; }
+.buganvillas .rama.brisa-media { animation: brisa 5.3s var(--ease-brisa) infinite alternate-reverse; }
+.buganvillas .rama.brisa-rapida { animation: brisa 4.7s var(--ease-brisa) infinite alternate; }
+
+/* ---------- Luces de verbena bajo el menú (todas las páginas) ---------- */
+.verbena { position: absolute; left: 0; right: 0; top: 100%; height: 28px; pointer-events: none; overflow: hidden; }
+.verbena svg { display: block; width: 100%; height: 28px; }
+.verbena .cable { fill: none; stroke: rgba(42, 33, 29, .85); stroke-width: 1.4; }
+.verbena .halo { fill: url(#halo-foco); opacity: .55; }
+.verbena .foco { fill: var(--foco); }
+.verbena .titila { animation: titilar 3.4s var(--ease-brisa) infinite alternate; }
+.verbena .titila:nth-of-type(3n) { animation-duration: 4.6s; animation-delay: -1.2s; }
+@keyframes titilar { 0% { opacity: .35; } 60% { opacity: .7; } 100% { opacity: .5; } }
+
+/* ---------- Sello con el logo oficial (como el letrero redondo de la fachada) ---------- */
+.sello-logo {
+  position: absolute; left: -16px; bottom: -28px; width: 132px; height: 132px; border-radius: 50%; z-index: 3;
+  box-shadow: 0 14px 30px -8px rgba(0, 0, 0, .55), 0 0 0 4px rgba(201, 164, 92, .55);
+  animation: flotar-sello 5s var(--ease-brisa) infinite alternate;
+  transition: transform .5s var(--ease-huayno);
+}
+.sello-logo svg { width: 100%; height: 100%; display: block; }
+@keyframes flotar-sello { from { transform: rotate(-6deg) translateY(0); } to { transform: rotate(-2deg) translateY(-8px); } }
+.hero-visual:hover .sello-logo, .sello-logo:focus-visible { animation: pulse-glow 1.6s var(--ease-brisa) infinite; }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 14px 30px -8px rgba(0, 0, 0, .55), 0 0 0 4px rgba(201, 164, 92, .55), 0 0 0 0 rgba(245, 225, 174, .0); }
+  50% { box-shadow: 0 14px 30px -8px rgba(0, 0, 0, .55), 0 0 0 4px rgba(245, 225, 174, .95), 0 0 34px 10px rgba(242, 181, 68, .55); }
+}
+@media (max-width: 600px) { .sello-logo { width: 104px; height: 104px; left: -6px; } }
+
+/* ---------- Carta: baldosas hidráulicas y marcos de lirios ---------- */
+body.pagina-carta { background-color: var(--bg-crema); background-image: var(--baldosa), var(--grano); background-size: 64px 64px, 220px 220px; }
+body.pagina-carta .carta-layout > main { position: relative; }
+.enredadera { position: absolute; top: 30px; width: 190px; height: 168px; pointer-events: none; z-index: 3; }
+.enredadera.izq { left: -6px; }
+.enredadera.der { right: -6px; transform: scaleX(-1); }
+.enredadera .lirio { transform-box: fill-box; transform-origin: 50% 50%; animation: brisa 6s var(--ease-brisa) infinite alternate; }
+.enredadera .lirio.b { animation-duration: 7.4s; animation-direction: alternate-reverse; }
+.carta-layout > main > *:not(.enredadera) { position: relative; z-index: 1; }
+@media (max-width: 640px) { .enredadera { width: 104px; height: 92px; top: 74px; } }
+
+/* Ilustraciones de platos: al activarse, acento fucsia buganvilla junto al dorado */
+.plato.encima .ilus .ac, .plato.viva .ilus .ac, .plato:focus-within .ilus .ac { stroke: var(--buganvilla); fill: rgba(217, 20, 133, .16); }
+.plato.encima, .plato.viva { box-shadow: inset 10px 0 0 var(--brand-coral), 0 20px 38px -14px rgba(217, 20, 133, .38), 0 0 0 1px rgba(201, 164, 92, .55); }
+
+/* Buganvillas y banderines no se recortan: en pantallas anchas el dibujo crece y debe poder colgar completo */
+.guirnalda, .buganvillas { overflow: visible; }
+.hero-noche .contenedor.hero-grid { z-index: 4; }
+
+/* ---------- 17. Menos movimiento: solo fundidos suaves ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; }
+  .banderin, .mota, .vapor, .flores-portal { animation: none !important; }
+  .mota, .vapor, .flores-portal { display: none; }
+  [data-revelar] { transform: none; transition: opacity .4s ease; }
+  .telar .rombo { stroke-dashoffset: 0; transition: fill .4s ease; }
+  .portal-capa { display: none; }
+  .plato[data-revelar]:not(.visible) { transform: none; }
+  .vapor-mini { display: none; }
+  .chispa, .confeti { display: none; }
+  .lluvia { display: none; }
+  .mural .lejos, .mural .cerca { transform: none !important; }
+  .guardiana, .orejas, .sombrero, .inti { transform: translateX(-50%) !important; transition: none !important; }
+  .orejas, .sombrero, .inti { transform: none !important; }
+  .plato.encima, .plato:focus-within, .plato.viva { transform: none; }
+  .plato.encima .ilus .tr, .plato.viva .ilus .tr { animation: none; }
+  .ilus { transition: opacity .3s ease !important; transform: none !important; }
+  .boton, .cat-card, .especial, .chip, .btn-agregar, .flotante, .isotipo, .hero-visual .principal, .plato, .hoy-toca button { transition: background .2s, box-shadow .2s !important; transform: none !important; }
+}
+
+/* ==========================================================
+   Entrega 4 · Reservas, asistente y pedido desde la mesa (QR)
+   ========================================================== */
+
+/* ---------- Carta: acciones de la barra superior ---------- */
+.acciones-topbar { display: flex; align-items: center; gap: 8px; }
+.modo-mesa [data-solo-whatsapp], .modo-mesa .acciones-topbar [data-reservar] { display: none !important; }
+@media (max-width: 420px) { .acciones-topbar .boton.chico { padding: 8px 12px; font-size: 13px; } }
+
+/* Aviso "Estás en la Mesa N" en la portada de la carta */
+.aviso-mesa {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px;
+  max-width: 560px; margin: 18px auto 0; padding: 12px 16px; border-radius: 16px;
+  background: var(--papel); border: 1.5px solid var(--brand-dorado); box-shadow: var(--sombra);
+  animation: aparecer-suave .6s var(--ease-telar) both;
+}
+.aviso-mesa p { margin: 0; font-size: 15px; color: var(--bg-tinta); }
+.aviso-mesa strong { color: var(--coral-texto); }
+.aviso-mesa a { font-weight: 700; color: var(--coral-texto); text-underline-offset: 3px; }
+@keyframes aparecer-suave { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Menú del día en la mesa: elegir entrada y segundo */
+.eleccion-menu { display: grid; gap: 8px; margin: 4px 0 12px; }
+.eleccion-menu select {
+  width: 100%; min-height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--borde);
+  background: var(--papel); font: 500 14px var(--font-body); color: var(--bg-tinta);
+}
+
+/* Repetir el último pedido */
+.repetir-pedido {
+  display: block; width: 100%; min-height: 46px; margin-top: 10px; padding: 0 14px; border-radius: 14px;
+  border: 1.5px dashed var(--brand-dorado); background: var(--dorado-suave); color: var(--bg-tinta);
+  font: 700 14px var(--font-body); cursor: pointer; transition: transform .2s var(--ease-telar), background .2s;
+}
+.repetir-pedido:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) { .repetir-pedido:hover { background: #EFDFC0; } }
+
+/* GPS del delivery */
+.boton-gps {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 8px; padding: 0 14px;
+  border-radius: 12px; border: 1.5px solid var(--borde); background: var(--papel); color: var(--coral-texto);
+  font: 700 14px var(--font-body); cursor: pointer; transition: transform .2s var(--ease-telar), border-color .2s;
+}
+.boton-gps svg { width: 18px; height: 18px; }
+.boton-gps:active { transform: scale(.97); }
+.boton-gps:disabled { opacity: .6; cursor: progress; }
+#gps-info:empty { display: none; }
+#gps-info { display: block; margin-top: 6px; }
+
+/* ---------- Modal de reservas ---------- */
+.modal-alpa {
+  width: min(620px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 28px 26px 26px; border: 0;
+  border-radius: 24px; background: var(--bg-crema); color: var(--bg-tinta); box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .55);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.modal-alpa[open] { animation: modal-entra .38s var(--ease-telar); }
+.modal-alpa::backdrop { background: rgba(28, 21, 18, .62); backdrop-filter: blur(3px); }
+@keyframes modal-entra { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+.modal-alpa__cerrar {
+  position: sticky; top: 0; float: right; width: 44px; height: 44px; margin: -12px -10px 0 0; border: 0; border-radius: 12px;
+  background: transparent; color: var(--bg-tinta); font-size: 18px; cursor: pointer;
+}
+.modal-alpa__eyebrow { margin: 0; color: var(--coral-texto); font: 700 12px var(--font-body); letter-spacing: .14em; text-transform: uppercase; }
+.modal-alpa__titulo { margin: 4px 0 6px; font: 600 clamp(26px, 5vw, 32px)/1.1 var(--font-display); }
+.modal-alpa__intro { margin: 0 0 18px; color: var(--tinta-suave); }
+.modal-alpa__nota { margin: 8px 0 0; font-size: 13px; color: var(--tinta-suave); }
+.modal-alpa__error { min-height: 20px; margin: 12px 0 0; color: var(--coral-texto); font-weight: 700; font-size: 14px; }
+.modal-alpa__enviar { width: 100%; margin-top: 10px; justify-content: center; }
+.paso-alpa { margin: 0 0 18px; padding: 0; border: 0; }
+.paso-alpa legend { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font: 600 17px var(--font-display); }
+.paso-alpa__num {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--bg-tinta); color: var(--dorado-claro); font: 700 13px var(--font-body);
+}
+.opciones-dos, .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .opciones-dos, .dos-col { grid-template-columns: 1fr; } }
+.opcion-tarjeta { position: relative; display: block; cursor: pointer; }
+.opcion-tarjeta input { position: absolute; opacity: 0; pointer-events: none; }
+.opcion-tarjeta > span {
+  display: grid; gap: 3px; height: 100%; padding: 12px 14px; border-radius: 16px; border: 1.5px solid var(--borde);
+  background: var(--papel); transition: border-color .2s, background .2s, transform .25s var(--ease-telar);
+}
+.opcion-tarjeta small { color: var(--tinta-suave); font-size: 13px; }
+.opcion-tarjeta input:checked + span { border-color: var(--brand-coral); background: var(--coral-suave); }
+.opcion-tarjeta input:focus-visible + span { outline: 3px solid var(--brand-dorado); outline-offset: 2px; }
+.opcion-tarjeta:active > span { transform: scale(.98); }
+.campo-alpa { display: grid; gap: 5px; margin-bottom: 10px; font-size: 13px; font-weight: 700; }
+.campo-alpa__control {
+  display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 12px; border-radius: 14px;
+  border: 1.5px solid var(--borde); background: var(--papel); color: var(--tinta-suave);
+}
+.campo-alpa__control:focus-within { border-color: var(--brand-coral); }
+.campo-alpa__control svg { width: 18px; height: 18px; flex: none; }
+.campo-alpa__control input, .campo-alpa__control textarea {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 500 16px var(--font-body); color: var(--bg-tinta); padding: 10px 0;
+}
+.campo-alpa__control textarea { resize: vertical; }
+.fila-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-personas {
+  min-width: 56px; min-height: 48px; padding: 0 16px; border-radius: 14px; border: 1.5px solid var(--borde);
+  background: var(--papel); font: 600 18px var(--font-display); color: var(--bg-tinta); cursor: pointer;
+  transition: transform .2s var(--ease-telar), background .2s, border-color .2s;
+}
+.chip-personas[aria-pressed="true"] { background: var(--bg-tinta); border-color: var(--bg-tinta); color: var(--dorado-claro); }
+.chip-personas:active { transform: scale(.95); }
+.modal-alpa__ok { padding: 20px 0 4px; text-align: center; }
+.modal-alpa__sello {
+  display: inline-grid; place-items: center; width: 68px; height: 68px; border-radius: 50%;
+  background: var(--coral-oscuro); color: #fff; animation: sello-entra .6s var(--ease-huayno);
+}
+.modal-alpa__sello svg { width: 34px; height: 34px; }
+@keyframes sello-entra { from { transform: scale(.4) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---------- Asistente de la web ---------- */
+.asis { position: fixed; right: 16px; bottom: 88px; z-index: 46; font-family: var(--font-body); }
+.asis--carta { bottom: 16px; }
+@media (max-width: 999px) { .asis--carta { bottom: 86px; } }
+.asis-fab {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 18px 0 14px; border: 1.5px solid rgba(201, 164, 92, .55);
+  border-radius: 999px; background: var(--bg-tinta); color: var(--bg-crema); font: 700 14px var(--font-body); cursor: pointer;
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, .45); transition: transform .3s var(--ease-telar);
+}
+.asis-fab svg { width: 24px; height: 24px; color: var(--dorado-claro); }
+.asis-fab:active { transform: scale(.96); }
+@media (hover: hover) and (pointer: fine) { .asis-fab:hover { transform: translateY(-2px); } }
+@media (max-width: 640px) { .asis-fab span { display: none; } .asis-fab { width: 52px; padding: 0; justify-content: center; } }
+.asis.abierto .asis-fab { display: none; }
+.asis-panel {
+  display: flex; flex-direction: column; width: min(380px, calc(100vw - 24px)); height: min(560px, calc(100dvh - 120px));
+  border-radius: 22px; overflow: hidden; background: var(--bg-crema); border: 1px solid var(--borde);
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .5); transform-origin: bottom right; animation: asis-entra .32s var(--ease-telar);
+}
+.asis-panel[hidden] { display: none; }
+@keyframes asis-entra { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+.asis-cabeza {
+  position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  padding: 14px 14px 18px 18px; background: var(--bg-tinta); color: var(--bg-crema);
+}
+.asis-cabeza::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 18px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='18' viewBox='0 0 72 18'%3E%3Cpath d='M0 2 Q36 6 72 2' fill='none' stroke='%23C9A45C' stroke-width='1.2'/%3E%3Cpath d='M3 3 L15 4 L9 16Z' fill='%23EE6C5E'/%3E%3Cpath d='M27 4 L39 4 L33 17Z' fill='%23C9A45C'/%3E%3Cpath d='M51 4 L63 3 L57 16Z' fill='%23D91485'/%3E%3C/svg%3E") repeat-x 0 0 / 72px 18px;
+}
+.asis-titulo { margin: 0; font: 600 18px var(--font-display); }
+.asis-sub { margin: 2px 0 0; font-size: 12px; color: var(--dorado-claro); }
+.asis-cerrar { width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: var(--bg-crema); font-size: 17px; cursor: pointer; }
+.asis-mensajes { flex: 1; overflow-y: auto; padding: 22px 14px 10px; display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
+.asis-msg { max-width: 86%; padding: 10px 13px; border-radius: 16px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.asis-msg.entra { animation: asis-msg .3s var(--ease-telar); }
+@keyframes asis-msg { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.asis-msg--bot { align-self: flex-start; background: var(--papel); border: 1px solid var(--borde); border-bottom-left-radius: 6px; }
+.asis-msg--yo { align-self: flex-end; background: var(--bg-tinta); color: var(--bg-crema); border-bottom-right-radius: 6px; }
+.asis-enlace { display: inline-block; margin-top: 6px; font-weight: 700; color: var(--coral-texto); text-underline-offset: 3px; }
+.asis-enlace--wa { color: #10703B; }
+.asis-platos { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.asis-platos li { display: grid; gap: 1px; padding-top: 6px; border-top: 1px dashed var(--borde); }
+.asis-platos a { font-weight: 700; color: var(--coral-texto); }
+.asis-platos span { font-size: 13px; color: var(--tinta-suave); }
+.asis-chips { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; scrollbar-width: none; border-top: 1px solid var(--borde); }
+.asis-chip {
+  flex: none; min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--borde);
+  background: var(--papel); color: var(--bg-tinta); font: 600 13px var(--font-body); cursor: pointer; transition: transform .2s var(--ease-telar);
+}
+.asis-chip:active { transform: scale(.95); }
+@media (hover: hover) and (pointer: fine) { .asis-chip:hover { border-color: var(--brand-dorado); } }
+.asis-form { display: flex; gap: 8px; padding: 10px 12px 12px; background: var(--papel); border-top: 1px solid var(--borde); }
+.asis-form input { flex: 1; min-width: 0; min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1.5px solid var(--borde); font: 500 16px var(--font-body); color: var(--bg-tinta); background: var(--bg-crema); }
+.asis-form input:focus { outline: none; border-color: var(--brand-coral); }
+.asis-form button { width: 44px; height: 44px; border: 0; border-radius: 12px; background: var(--coral-oscuro); color: #fff; cursor: pointer; display: grid; place-items: center; }
+.asis-form button svg { width: 20px; height: 20px; }
+body:has(.modal-alpa[open]) .asis { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-alpa[open], .asis-panel, .asis-msg.entra, .modal-alpa__sello, .aviso-mesa { animation: none; }
+}
+@media (max-width: 520px) { .acciones-topbar .mi-cuenta { display: none; } .acciones-topbar { gap: 6px; } }
+@media (max-width: 400px) { .topbar .marca span { font-size: 16px; } }

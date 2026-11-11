@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocina · Alpaqori</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/operacion.css">
+</head>
+<body class="op op--personal" data-pantalla="cocina">
+  <header class="per-cabecera">
+    <a class="op-marca" href="personal.html" data-logo>ALPAQORI</a>
+    <h1>Cocina</h1>
+    <nav class="per-nav" aria-label="Pantallas del personal" data-per-nav></nav>
+    <button type="button" class="per-boton per-boton--lleno" id="coc-sonido" aria-pressed="false">Activar sonido</button>
+  </header>
+  <p class="per-demo" data-aviso-demo hidden>Modo demostración: las comandas viven en este navegador. Abre la carta con <strong>?mesa=3</strong> en otra pestaña para ver llegar un pedido.</p>
+  <main class="coc-columnas">
+    <section class="coc-columna coc-columna--confirmar" aria-labelledby="t-confirmar"><h2 id="t-confirmar">Por confirmar <span id="n-por_confirmar">0</span></h2><div id="col-por_confirmar"></div></section>
+    <section class="coc-columna" aria-labelledby="t-nuevo"><h2 id="t-nuevo">Aceptados <span id="n-nuevo">0</span></h2><div id="col-nuevo"></div></section>
+    <section class="coc-columna" aria-labelledby="t-prep"><h2 id="t-prep">En el fogón <span id="n-preparando">0</span></h2><div id="col-preparando"></div></section>
+    <section class="coc-columna" aria-labelledby="t-listo"><h2 id="t-listo">Listos para servir <span id="n-listo">0</span></h2><div id="col-listo"></div></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/pedidos-store.js"></script>
+  <script src="js/pedidos-supabase.js"></script>
+  <script src="js/operacion-comun.js"></script>
+  <script src="js/acceso-personal.js"></script>
+  <script src="js/cocina.js"></script>
+</body>
+</html>

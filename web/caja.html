@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caja · Alpaqori</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/operacion.css">
+</head>
+<body class="op op--personal" data-pantalla="caja">
+  <header class="per-cabecera">
+    <a class="op-marca" href="personal.html" data-logo>ALPAQORI</a>
+    <h1>Caja</h1>
+    <nav class="per-nav" aria-label="Pantallas del personal" data-per-nav></nav>
+  </header>
+  <p class="per-demo" data-aviso-demo hidden>Modo demostración: las cuentas viven en este navegador.</p>
+  <main class="caj-contenido">
+    <div class="caj-resumen" id="caj-resumen"></div>
+    <div id="caj-cuentas" aria-live="polite"></div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/pedidos-store.js"></script>
+  <script src="js/pedidos-supabase.js"></script>
+  <script src="js/operacion-comun.js"></script>
+  <script src="js/acceso-personal.js"></script>
+  <script src="js/caja.js"></script>
+</body>
+</html>

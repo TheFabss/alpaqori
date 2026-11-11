@@ -1,0 +1,255 @@
+/* =========================================================
+   ALPAQORI · operacion.css
+   Pantallas de operación: cocina, caja, QR de mesas, acceso
+   del personal y "Mi pedido y cuenta" del cliente.
+   Misma identidad que la web: tinta, crema, coral y dorado,
+   Fredoka para títulos y Montserrat para el texto.
+   ========================================================= */
+:root {
+  --op-crema: #FBF6EF;
+  --op-papel: #F4EADC;
+  --op-tinta: #2A211D;
+  --op-suave: #6E5F55;
+  --op-linea: rgba(42, 33, 29, .14);
+  --op-coral: #EE6C5E;
+  --op-coral-osc: #B83F33;
+  --op-coral-boton: #C9493C;
+  --op-dorado: #C9A45C;
+  --op-buganvilla: #D91485;
+  --op-verde: #4E7A3A;
+  --op-noche: #1C1512;
+  --op-panel: #2A211D;
+  --op-claro: #F7EFE4;
+  --op-gris: #BDAEA2;
+  --op-ambar: #F2B544;
+  --op-rojo: #F0705F;
+  --op-ok: #8FD19E;
+  --ease-salida: cubic-bezier(0.23, 1, 0.32, 1);
+  --banderines: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='22' viewBox='0 0 96 22'%3E%3Cpath d='M0 2 Q48 7 96 2' fill='none' stroke='%23C9A45C' stroke-width='1.4'/%3E%3Cpath d='M4 3 L20 4 L12 20Z' fill='%23EE6C5E'/%3E%3Cpath d='M36 5 L52 5 L44 21Z' fill='%23C9A45C'/%3E%3Cpath d='M68 4 L84 3 L76 20Z' fill='%23D91485'/%3E%3C/svg%3E");
+}
+.op, .op * { box-sizing: border-box; }
+.op { margin: 0; font-family: 'Montserrat', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.op [hidden] { display: none !important; }
+.op button { font: inherit; cursor: pointer; }
+.op h1, .op h2, .op h3 { font-family: 'Fredoka', 'Montserrat', sans-serif; font-weight: 600; margin: 0; text-wrap: balance; }
+.op p { text-wrap: pretty; }
+.op :focus-visible { outline: 3px solid var(--op-dorado); outline-offset: 2px; }
+.op a { color: inherit; }
+.op-marca { display: inline-flex; align-items: center; gap: .5rem; font: 700 1.05rem/1 'Fredoka', sans-serif; letter-spacing: .12em; text-decoration: none; }
+.op-marca svg { width: 30px; height: 30px; flex: none; }
+
+/* Botones táctiles: mínimo 44px, respuesta inmediata al presionar */
+.per-boton, .cli-accion {
+  transition: transform 160ms var(--ease-salida), background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out;
+}
+.per-boton:active, .cli-accion:active { transform: scale(.97); }
+.coc-tiempo, .cli-total, .caj-total, .caj-resumen strong, .per-hub__dato strong { font-variant-numeric: tabular-nums; }
+
+/* =========================================================
+   Personal: cabecera y navegación compartidas
+   ========================================================= */
+.op--personal { min-height: 100vh; background: var(--op-noche); color: var(--op-claro); }
+.per-cabecera {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem;
+  padding: .85rem 1.2rem 1.15rem;
+  background: var(--op-panel);
+  border-bottom: 1px solid rgba(201, 164, 92, .28);
+}
+.per-cabecera::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 22px;
+  background: var(--banderines) repeat-x 0 0 / 96px 22px; pointer-events: none; opacity: .9;
+}
+.per-cabecera h1 { font-size: 1.35rem; }
+.per-cabecera .op-marca { color: var(--op-dorado); }
+.per-nav { display: flex; flex-wrap: wrap; gap: .35rem; margin-left: auto; }
+.per-nav a {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 .85rem;
+  border-radius: 999px; color: var(--op-gris); font-weight: 600; font-size: .86rem; text-decoration: none;
+}
+.per-nav a[aria-current="page"] { background: rgba(201, 164, 92, .16); color: var(--op-claro); }
+@media (hover: hover) and (pointer: fine) { .per-nav a:hover { color: var(--op-claro); } }
+.per-boton {
+  min-height: 44px; padding: 0 1rem; border: 1.5px solid var(--op-dorado); border-radius: 12px;
+  background: transparent; color: #F0DCA6; font-weight: 700; font-size: .9rem;
+}
+.per-boton--lleno { border-color: var(--op-coral-boton); background: var(--op-coral-boton); color: #fff; }
+.per-boton--rechazo { border-color: var(--op-rojo); color: var(--op-rojo); }
+.per-boton--armado { background: var(--op-rojo); border-color: var(--op-rojo); color: #fff; }
+.per-vacio { padding: 1.5rem 1rem; border: 1.5px dashed rgba(247, 239, 228, .16); border-radius: 14px; text-align: center; color: var(--op-gris); font-size: .9rem; }
+.per-demo {
+  margin: 1.6rem 1.2rem 0; padding: .7rem 1rem; border-radius: 12px;
+  background: rgba(242, 181, 68, .1); border: 1px solid rgba(242, 181, 68, .35); color: #F6D48C; font-size: .85rem;
+}
+
+/* =========================================================
+   Hub del personal
+   ========================================================= */
+.per-hub { max-width: 980px; margin: 0 auto; padding: 2rem 1.2rem 3rem; }
+.per-hub__saludo { margin: 0 0 .3rem; color: var(--op-dorado); font-weight: 600; letter-spacing: .04em; }
+.per-hub__titulo { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.per-hub__bajada { margin: .5rem 0 1.6rem; color: var(--op-gris); max-width: 60ch; }
+.per-hub__datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin-bottom: 1.6rem; }
+.per-hub__dato { padding: .9rem 1rem; border-radius: 14px; background: var(--op-panel); color: var(--op-gris); font-size: .82rem; }
+.per-hub__dato strong { display: block; margin-top: .2rem; font: 600 1.6rem/1.1 'Fredoka', sans-serif; color: var(--op-claro); }
+.per-hub__dato--alerta strong { color: var(--op-ambar); }
+.per-hub__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.per-tarjeta {
+  grid-template-columns: auto 1fr; align-items: center; column-gap: .8rem;
+  position: relative; display: grid; gap: .5rem; padding: 1.3rem 1.2rem 1.2rem;
+  border-radius: 18px; background: var(--op-panel); text-decoration: none; color: var(--op-claro);
+  border: 1px solid rgba(201, 164, 92, .18);
+  transition: transform 220ms var(--ease-salida), border-color 220ms ease-out;
+}
+.per-tarjeta:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) { .per-tarjeta:hover { transform: translateY(-3px); border-color: rgba(201, 164, 92, .55); } }
+.per-tarjeta__icono { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: rgba(238, 108, 94, .14); color: var(--op-coral); }
+.per-tarjeta__icono svg { width: 26px; height: 26px; }
+.per-tarjeta h2 { font-size: 1.3rem; }
+.per-tarjeta p, .per-tarjeta__ir { grid-column: 1 / -1; }
+.per-tarjeta p { margin: 0; color: var(--op-gris); font-size: .88rem; }
+.per-tarjeta__ir { margin-top: .3rem; color: var(--op-dorado); font-weight: 700; font-size: .86rem; }
+.per-hub__herramientas { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.6rem; }
+
+/* =========================================================
+   Cocina
+   ========================================================= */
+.coc-columnas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; padding: 1.6rem 1.2rem 1.2rem; align-items: start; }
+.coc-columna { min-width: 0; }
+.coc-columna h2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: .7rem; font-size: 1.08rem; }
+.coc-columna h2 span { min-width: 2rem; padding: .1rem .55rem; border-radius: 999px; background: rgba(247, 239, 228, .1); text-align: center; font-size: .9rem; }
+.coc-columna--confirmar { padding: .75rem; border: 2px dashed rgba(242, 181, 68, .55); border-radius: 16px; background: rgba(242, 181, 68, .06); }
+.coc-tarjeta { margin-bottom: .8rem; padding: 1rem; border-radius: 14px; border: 1px solid rgba(201, 164, 92, .22); background: var(--op-panel); }
+.coc-tarjeta.is-tarde { border-color: var(--op-rojo); box-shadow: inset 0 0 0 1px var(--op-rojo); }
+.coc-tarjeta.is-entrando { animation: cocEntrada 1.1s var(--ease-salida); }
+.coc-tarjeta__cabeza { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; }
+.coc-lugar { font: 600 1.45rem/1.1 'Fredoka', sans-serif; }
+.coc-tiempo { font-weight: 700; color: var(--op-gris); }
+.is-tarde .coc-tiempo { color: var(--op-rojo); }
+.coc-cliente { margin: .15rem 0 0; color: var(--op-gris); font-size: .82rem; }
+.coc-tarjeta ul { margin: .6rem 0; padding: 0; list-style: none; font-size: 1.05rem; line-height: 1.5; }
+.coc-tarjeta li strong { color: var(--op-dorado); }
+.coc-notas { margin: 0 0 .7rem; padding: .5rem .7rem; border-radius: 10px; background: rgba(242, 181, 68, .14); color: #F6D48C; font-weight: 600; font-size: .9rem; }
+.coc-verificar { margin: .2rem 0 .7rem; font-size: .8rem; font-weight: 700; color: var(--op-ambar); }
+.coc-pie { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .6rem; }
+.coc-sello { font-size: .78rem; font-weight: 700; color: var(--op-gris); }
+.coc-sello.is-pagado { color: var(--op-ok); }
+.coc-acciones { display: flex; gap: .45rem; }
+@keyframes cocEntrada { from { background: #6B3A22; } to { background: var(--op-panel); } }
+@media (max-width: 1100px) { .coc-columnas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .coc-columnas { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   Caja
+   ========================================================= */
+.caj-contenido { max-width: 920px; margin: 0 auto; padding: 1.6rem 1.2rem 2rem; }
+.caj-resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .7rem; margin-bottom: 1.4rem; }
+.caj-resumen div { padding: .8rem .9rem; border-radius: 14px; background: var(--op-panel); color: var(--op-gris); font-size: .8rem; }
+.caj-resumen div:first-child { background: rgba(238, 108, 94, .14); color: #F6B8AE; }
+.caj-resumen strong { display: block; margin-top: .15rem; font: 600 1.35rem/1.15 'Fredoka', sans-serif; color: var(--op-claro); }
+.caj-cuenta { margin-bottom: .9rem; padding: 1.1rem; border-radius: 16px; background: var(--op-panel); }
+.caj-cuenta.is-solicita { box-shadow: inset 0 0 0 2px var(--op-ambar); }
+.caj-cuenta__cabeza { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.caj-cuenta__cabeza h2 { font-size: 1.3rem; }
+.caj-total { font: 600 1.45rem/1 'Fredoka', sans-serif; color: var(--op-dorado); }
+.caj-aviso { display: inline-block; margin: .45rem 0 0; padding: .2rem .6rem; border-radius: 999px; background: rgba(242, 181, 68, .16); color: #F6D48C; font-weight: 700; font-size: .8rem; }
+.caj-cuenta ul { margin: .7rem 0; padding: 0; list-style: none; color: #E2D6CA; font-size: .92rem; line-height: 1.6; }
+.caj-metodos { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* =========================================================
+   Acceso del personal (login)
+   ========================================================= */
+.per-login { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1rem; background: var(--op-noche); }
+.per-login__caja { display: grid; gap: .9rem; width: min(380px, 100%); padding: 1.8rem 1.6rem; border-radius: 20px; background: var(--op-panel); border: 1px solid rgba(201, 164, 92, .35); }
+.per-login__caja .op-marca { color: var(--op-dorado); }
+.per-login__caja h2 { font-size: 1.4rem; }
+.per-login__caja label { display: grid; gap: .3rem; font-size: .84rem; font-weight: 700; }
+.per-login__caja input { min-height: 48px; padding: 0 .85rem; border: 1px solid rgba(247, 239, 228, .2); border-radius: 12px; background: var(--op-noche); color: var(--op-claro); font: 500 1rem 'Montserrat', sans-serif; }
+.per-login__error { min-height: 1.2rem; margin: 0; color: var(--op-rojo); font-size: .86rem; font-weight: 600; }
+
+/* =========================================================
+   Hoja de QR por mesa (también se imprime)
+   ========================================================= */
+.op--qr { min-height: 100vh; background: var(--op-crema); color: var(--op-tinta); }
+.op--qr .per-cabecera { color: var(--op-claro); }
+.qr-cuerpo { max-width: 1100px; margin: 0 auto; padding: 1.8rem 1.2rem 2.5rem; }
+.qr-intro { font-size: 1.6rem; }
+.qr-ayuda { margin: .4rem 0 0; color: var(--op-suave); max-width: 70ch; font-size: .92rem; }
+.qr-controles { display: flex; flex-wrap: wrap; align-items: end; gap: .8rem; margin: 1.2rem 0; }
+.qr-controles label { display: grid; gap: .3rem; font-size: .82rem; font-weight: 700; }
+.qr-controles input { width: 110px; min-height: 46px; padding: 0 .8rem; border: 1px solid var(--op-linea); border-radius: 12px; background: #fff; font: 500 1rem 'Montserrat', sans-serif; color: var(--op-tinta); }
+.qr-controles .qr-base { flex: 1 1 320px; }
+.qr-controles .qr-base input { width: 100%; }
+.qr-controles .per-boton { border-color: var(--op-coral-boton); background: var(--op-coral-boton); color: #fff; }
+.qr-controles .per-boton:disabled { opacity: .45; cursor: not-allowed; }
+.qr-aviso { padding: .7rem .9rem; border-radius: 12px; background: rgba(238, 108, 94, .1); color: var(--op-coral-osc); font-weight: 600; font-size: .88rem; }
+.qr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+.qr-tarjeta {
+  position: relative; padding: 1.6rem 1rem 1rem; border-radius: 18px; background: #fff; text-align: center;
+  border: 2px solid var(--op-dorado); break-inside: avoid; overflow: hidden;
+}
+.qr-tarjeta::before { content: ""; position: absolute; left: 0; right: 0; top: -4px; height: 22px; background: var(--banderines) repeat-x 0 0 / 96px 22px; }
+.qr-tarjeta .op-marca { justify-content: center; color: var(--op-tinta); font-size: .9rem; }
+.qr-tarjeta h2 { margin: .35rem 0 .6rem; font-size: 1.7rem; color: var(--op-coral-osc); }
+.qr-tarjeta p { margin: .5rem 0 0; font-size: .82rem; font-weight: 600; }
+.qr-tarjeta svg.qr { width: 100%; max-width: 170px; height: auto; }
+.qr-destino { display: block; margin-top: .45rem; font-size: .66rem; color: var(--op-suave); word-break: break-all; }
+@media print {
+  .op--qr { background: #fff; }
+  .per-cabecera, .qr-controles, .qr-aviso, .qr-intro, .qr-ayuda { display: none !important; }
+  .qr-cuerpo { padding: 0; }
+  .qr-tarjeta { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* =========================================================
+   Cliente: Mi pedido y cuenta (mesa.html)
+   ========================================================= */
+.op--cliente { min-height: 100vh; background: var(--op-crema); color: var(--op-tinta); padding-bottom: 6rem; }
+.cli-cabecera {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .8rem 1rem 1.2rem; color: var(--op-claro); background: var(--op-tinta);
+}
+.cli-cabecera::after { content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 22px; background: var(--banderines) repeat-x 0 0 / 96px 22px; pointer-events: none; }
+.cli-cabecera .op-marca { color: var(--op-claro); }
+.cli-lugar { padding: .4rem .85rem; border: 1.5px solid var(--op-dorado); border-radius: 999px; font-size: .84rem; font-weight: 700; color: #F0DCA6; white-space: nowrap; }
+.cli-contenido { max-width: 600px; margin: 0 auto; padding: 1.8rem 1rem 1rem; }
+.cli-contenido > h1 { font-size: 1.8rem; }
+.cli-barra { position: fixed; inset: auto 0 0 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; background: #fff; border-top: 1px solid var(--op-linea); box-shadow: 0 -10px 24px -18px rgba(0, 0, 0, .45); padding-bottom: env(safe-area-inset-bottom); }
+.cli-barra a, .cli-barra button { display: grid; place-items: center; min-height: 56px; border: 0; background: transparent; color: var(--op-suave); font-weight: 600; font-size: .92rem; text-decoration: none; }
+.cli-barra [aria-current="page"] { color: var(--op-coral-osc); font-weight: 800; }
+.cli-total { display: flex; justify-content: space-between; margin: 1rem 0; font: 600 1.25rem/1.2 'Fredoka', sans-serif; }
+.cli-accion { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 52px; padding: 0 1rem; border: 0; border-radius: 14px; background: var(--op-coral-boton); color: #fff; font-weight: 700; font-size: 1rem; text-decoration: none; }
+.cli-accion--sec { margin-top: .55rem; border: 1.5px solid var(--op-coral); background: transparent; color: var(--op-coral-osc); }
+.cli-vacio { padding: 2.5rem 1rem 1.2rem; text-align: center; color: var(--op-suave); }
+.cli-demo { margin: 0 0 .9rem; padding: .65rem .85rem; border-radius: 12px; background: rgba(242, 181, 68, .16); font-size: .84rem; }
+.cli-hoja { width: min(420px, calc(100% - 2rem)); margin: auto; padding: 1.3rem 1.2rem 1.4rem; border: 0; border-radius: 20px; background: var(--op-crema); color: var(--op-tinta); }
+.cli-hoja[open] { animation: hojaEntra 260ms var(--ease-salida); }
+.cli-hoja::backdrop { background: rgba(28, 21, 18, .6); }
+.cli-hoja__titulo { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
+.cli-cerrar { width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; font-size: 1.2rem; color: var(--op-tinta); }
+.cli-metodos-pago { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: 1rem; border: 0; padding: 0; }
+.cli-metodos-pago label { position: relative; display: grid; place-items: center; min-height: 48px; border: 1.5px solid var(--op-linea); border-radius: 12px; background: #fff; font-weight: 700; font-size: .88rem; cursor: pointer; }
+.cli-metodos-pago input { position: absolute; opacity: 0; pointer-events: none; }
+.cli-metodos-pago label:has(input:checked) { border-color: var(--op-coral); background: rgba(238, 108, 94, .08); color: var(--op-coral-osc); }
+.cli-metodos-pago label:has(input:focus-visible) { outline: 3px solid var(--op-dorado); outline-offset: 2px; }
+@keyframes hojaEntra { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: none; } }
+
+.seg-aviso { margin: .9rem 0 0; padding: .8rem .95rem; border-radius: 14px; background: rgba(78, 122, 58, .12); color: var(--op-verde); font-weight: 700; }
+.seg-pedido { padding: 1rem 1.05rem; margin-top: .9rem; border: 1px solid var(--op-linea); border-radius: 16px; background: #fff; }
+.seg-pedido.is-rechazado { opacity: .75; }
+.seg-pedido__cabeza { display: flex; justify-content: space-between; font: 600 1.05rem/1.2 'Fredoka', sans-serif; }
+.seg-pedido ul { margin: .5rem 0 .8rem; padding: 0; list-style: none; font-size: .9rem; color: var(--op-suave); }
+.seg-pasos { display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem; padding: 0; margin: 0; list-style: none; }
+.seg-pasos li { padding-top: .45rem; border-top: 5px solid var(--op-linea); font-size: .72rem; color: var(--op-suave); transition: border-color 400ms var(--ease-salida), color 400ms ease-out; }
+.seg-pasos li.is-hecho { border-color: var(--op-coral); color: var(--op-coral-osc); font-weight: 700; }
+.seg-estado { margin: .7rem 0 0; padding: .65rem .85rem; border-radius: 12px; background: rgba(242, 181, 68, .16); color: #7A5200; font-weight: 600; font-size: .88rem; }
+.seg-estado--rechazo { background: rgba(238, 108, 94, .12); color: var(--op-coral-osc); }
+.seg-cuenta { margin-top: 1.2rem; padding: 1.1rem; border-radius: 16px; background: var(--op-papel); }
+.seg-cuenta p { margin: 0 0 .7rem; }
+.cli-pedir-mas { margin-top: 1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .coc-tarjeta.is-entrando, .cli-hoja[open] { animation: none; }
+  .per-tarjeta, .seg-pasos li { transition: none; }
+}

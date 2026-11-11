@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mi pedido y cuenta · Alpaqori</title>
+  <meta name="theme-color" content="#2A211D">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/operacion.css">
+</head>
+<body class="op op--cliente">
+  <header class="cli-cabecera">
+    <a class="op-marca" href="index.html" data-logo>ALPAQORI</a>
+    <span class="cli-lugar" id="cli-lugar"></span>
+  </header>
+
+  <main class="cli-contenido" id="vista-seguimiento" aria-live="polite"></main>
+
+  <nav class="cli-barra" aria-label="Secciones">
+    <a id="nav-carta" href="carta.html">Carta</a>
+    <a id="nav-seguimiento" href="#" aria-current="page">Mi pedido y cuenta</a>
+  </nav>
+
+  <dialog class="cli-hoja" id="hoja-pago" aria-labelledby="pago-titulo">
+    <div class="cli-hoja__titulo">
+      <h2 id="pago-titulo">Pagar desde la mesa</h2>
+      <button type="button" class="cli-cerrar" data-cerrar aria-label="Cerrar">✕</button>
+    </div>
+    <p class="cli-demo">Modo demostración: no se realiza ningún cobro. Aquí irá la pasarela de pago.</p>
+    <fieldset class="cli-metodos-pago" aria-label="Método de pago">
+      <label><input type="radio" name="metodo" value="Yape" checked> Yape</label>
+      <label><input type="radio" name="metodo" value="Plin"> Plin</label>
+      <label><input type="radio" name="metodo" value="Tarjeta"> Tarjeta</label>
+    </fieldset>
+    <p class="cli-total"><span>A pagar</span><span id="pago-total"></span></p>
+    <button type="button" class="cli-accion" id="pago-confirmar">Simular pago aprobado</button>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/pedidos-store.js"></script>
+  <script src="js/pedidos-supabase.js"></script>
+  <script src="js/operacion-comun.js"></script>
+  <script src="js/mesa.js"></script>
+</body>
+</html>

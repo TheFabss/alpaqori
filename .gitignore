@@ -1,0 +1,13 @@
+node_modules/
+bot-whatsapp/.wwebjs_auth/
+bot-whatsapp/.wwebjs_cache/
+bot-whatsapp/datos*.json
+
+# Secretos: nunca se suben
+.env
+*.env
+.env.*
+!.env.example
+
+# Configuración local de Claude Code
+.claude/

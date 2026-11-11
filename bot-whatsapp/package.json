@@ -1,0 +1,20 @@
+{
+  "name": "alpaqori-bot",
+  "version": "0.1.0",
+  "description": "Bot de pedidos por WhatsApp para Alpaqori (beta, basado en el bot de Komakai)",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "simular": "node simular.js",
+    "probar": "node pruebas.js",
+    "api": "node --env-file-if-exists=.env api-oficial.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0"
+  }
+}

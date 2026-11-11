@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR por mesa · Alpaqori</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A211D">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/operacion.css">
+</head>
+<body class="op op--qr" data-pantalla="qr">
+  <header class="per-cabecera">
+    <a class="op-marca" href="personal.html" data-logo>ALPAQORI</a>
+    <h1>QR de mesas</h1>
+    <nav class="per-nav" aria-label="Pantallas del personal" data-per-nav></nav>
+  </header>
+  <div class="qr-cuerpo">
+    <h2 class="qr-intro">Un QR para cada mesa</h2>
+    <p class="qr-ayuda">El cliente escanea, ve la carta con su número de mesa y su pedido llega directo a cocina. Pega la dirección pública de la web (la publicada, no la de la laptop) y pulsa Imprimir.</p>
+    <div class="qr-controles">
+      <label class="qr-base">Dirección pública de la web
+        <input id="qr-base" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://tu-usuario.github.io/alpaqori/">
+      </label>
+      <label>Cantidad de mesas <input id="qr-cantidad" type="number" min="1" max="99" value="10"></label>
+      <button type="button" class="per-boton" id="qr-imprimir">Imprimir</button>
+    </div>
+    <p class="qr-aviso" id="qr-aviso" role="alert" hidden></p>
+    <div class="qr-grid" id="qr-grid"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script src="js/operacion-comun.js"></script>
+  <script src="js/mesas-qr.js"></script>
+</body>
+</html>
