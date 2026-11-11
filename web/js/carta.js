@@ -230,42 +230,63 @@
 
   function irAPlato(p) {
     estado.texto = "";
-    el.buscador.value = "";
-    cambiarCategoria("todas", false);
+    // El plato está en su sección (la vista Inicio ya no muestra toda la carta)
+    if (estado.categoria !== p.categoria) cambiarCategoria(p.categoria, false);
     var tarjeta = document.getElementById("plato-" + p.id);
     if (!tarjeta) return;
     tarjeta.classList.add("visible");
-    tarjeta.scrollIntoView({ behavior: "smooth", block: "center" });
+    tarjeta.scrollIntoView({ behavior: menosMovimiento ? "auto" : "smooth", block: "center" });
     tarjeta.classList.remove("resaltado");
     setTimeout(function () { tarjeta.classList.add("resaltado"); }, 350);
   }
 
   /* ---------- Chips de secciones ---------- */
 
+  /* ---------- Secciones: pestañas de texto con un subrayado que se desliza ---------- */
+  var carril = document.getElementById("carril");
+  var indicador = document.getElementById("chips-indicador");
+
+  function moverIndicador(sinAnimar) {
+    var activo = el.chips.querySelector('.chip[aria-pressed="true"]');
+    if (!activo) { indicador.style.opacity = "0"; return; }
+    indicador.classList.toggle("sin-animar", Boolean(sinAnimar));
+    indicador.style.opacity = "1";
+    // Indicador de 100px escalado: solo se anima transform (no width ni left)
+    indicador.style.transform = "translateX(" + (activo.offsetLeft + 12) + "px) scaleX(" + ((activo.offsetWidth - 24) / 100).toFixed(3) + ")";
+  }
+
+  function bordesCarril() {
+    var max = el.chips.scrollWidth - el.chips.clientWidth;
+    carril.classList.toggle("hay-izq", el.chips.scrollLeft > 4);
+    carril.classList.toggle("hay-der", el.chips.scrollLeft < max - 4);
+  }
+
   function renderChips() {
-    el.chips.textContent = "";
-    var opciones = [{ id: "todas", nombre: "Inicio" }].concat(CATEGORIAS);
-    opciones.forEach(function (c) {
-      var b = crear("button", "chip", c.nombre);
-      b.type = "button";
-      b.setAttribute("aria-pressed", String(estado.categoria === c.id && !estado.texto));
-      if (c.id !== "todas") {
-        var n = PRODUCTOS.filter(function (p) { return p.categoria === c.id; }).length;
-        b.appendChild(crear("span", "n", String(n)));
-      }
-      b.addEventListener("click", function () {
-        estado.texto = "";
-        el.buscador.value = "";
-        el.limpiar.hidden = true;
-        cambiarCategoria(c.id, true);
-        var y = el.lista.getBoundingClientRect().top + window.scrollY - 190;
-        if (window.scrollY > y) window.scrollTo({ top: y, behavior: "smooth" });
+    if (!el.chips.querySelector(".chip")) {
+      [{ id: "todas", nombre: "Inicio" }].concat(CATEGORIAS).forEach(function (c) {
+        var b = crear("button", "chip", c.nombre);
+        b.type = "button";
+        b.dataset.cat = c.id;
+        b.addEventListener("click", function () { irASeccion(c.id); });
+        el.chips.appendChild(b);
       });
-      el.chips.appendChild(b);
-      if (b.getAttribute("aria-pressed") === "true") {
-        setTimeout(function () { b.scrollIntoView({ block: "nearest", inline: "center" }); }, 0);
+      el.chips.appendChild(indicador);   // vive dentro del carril que se desplaza
+      el.chips.addEventListener("scroll", bordesCarril, { passive: true });
+      window.addEventListener("resize", function () { moverIndicador(true); bordesCarril(); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moverIndicador(true); });
+    }
+    var primera = !renderChips.listo;
+    renderChips.listo = true;
+    el.chips.querySelectorAll(".chip").forEach(function (b) {
+      var activo = b.dataset.cat === estado.categoria;
+      b.setAttribute("aria-pressed", String(activo));
+      if (activo) {
+        var destino = b.offsetLeft - (el.chips.clientWidth - b.offsetWidth) / 2;
+        el.chips.scrollTo({ left: Math.max(0, destino), behavior: primera || menosMovimiento ? "auto" : "smooth" });
       }
     });
+    moverIndicador(primera);
+    bordesCarril();
   }
 
   function cambiarCategoria(id, animar) {
@@ -311,30 +332,83 @@
     window.scrollTo({ top: Math.max(0, y), behavior: menosMovimiento ? "auto" : "smooth" });
   }
 
-  // Índice de la carta: una baldosa por sección con su ícono, lema y cuántos platos tiene
-  function indiceSecciones() {
-    var s = crear("section", "grupo-carta indice-secciones");
-    s.appendChild(cabecera("¿Qué se te antoja?", "", "Elige una sección o busca tu plato arriba", 0));
-    var g = crear("div", "baldosas");
-    CATEGORIAS.forEach(function (c, i) {
-      var n = PRODUCTOS.filter(function (p) { return p.categoria === c.id; }).length;
-      var b = crear("button", "baldosa");
-      b.type = "button";
-      b.style.setProperty("--i", Math.min(i, MAX_ESCALON));
-      b.setAttribute("data-revelar", "");
-      var icono = crear("span", "baldosa__icono");
-      icono.innerHTML = window.ALPAQORI_ARTE.icono(c.id);
-      b.appendChild(icono);
-      var texto = crear("span", "baldosa__texto");
-      texto.appendChild(crear("strong", "", c.nombre));
-      texto.appendChild(crear("small", "", c.lema));
-      b.appendChild(texto);
-      b.appendChild(crear("span", "baldosa__n", String(n)));
-      b.setAttribute("aria-label", c.nombre + ", " + n + " platos");
-      b.addEventListener("click", function () { irASeccion(c.id); });
-      g.appendChild(b);
+  /* ---------- Los más pedidos (fotos referenciales del restaurante) ----------
+     Para cambiar la lista: id del plato en catalogo.json, foto en images/ y la zona de la foto
+     (recorte = x, y, ancho, alto en fracciones de la imagen, como data-recorte en index.html). */
+  var MAS_PEDIDOS = [
+    { id: "lomo-saltado", foto: "images/16.webp", recorte: [0.59, 0.09, 0.345, 0.146] },
+    { id: "pollo-a-la-plancha", foto: "images/11.webp", recorte: [0.458, 0.145, 0.23, 0.64] },
+    { id: "ceviche", foto: "images/20.webp", recorte: [0.52, 0.08, 0.39, 0.124] },
+    { id: "el-achorado-caldo-de-gallina", foto: "images/17.webp", recorte: [0.13, 0.47, 0.74, 0.415] },
+    { id: "chicha-morada-litro", foto: "images/20.webp", recorte: [0.1, 0.08, 0.38, 0.12] }
+  ];
+
+  // Muestra solo la zona "recorte" de la foto, cubriendo la caja sin deformarla
+  function encuadrar(caja, img, r) {
+    function ajustar() {
+      var cw = caja.clientWidth, ch = caja.clientHeight;
+      if (!cw || !img.naturalWidth) return;
+      var zw = r[2] * img.naturalWidth, zh = r[3] * img.naturalHeight;
+      var escala = Math.max(cw / zw, ch / zh);
+      var ancho = img.naturalWidth * escala, alto = img.naturalHeight * escala;
+      var cx = (r[0] + r[2] / 2) * ancho, cy = (r[1] + r[3] / 2) * alto;
+      img.style.width = ancho + "px";
+      img.style.height = alto + "px";
+      img.style.transform = "translate(" + (cw / 2 - cx).toFixed(1) + "px," + (ch / 2 - cy).toFixed(1) + "px)";
+      caja.classList.add("lista");
+    }
+    if (img.complete && img.naturalWidth) ajustar();
+    else img.addEventListener("load", ajustar);
+    if (window.ResizeObserver) new ResizeObserver(ajustar).observe(caja);
+  }
+
+  function masPedidos() {
+    var s = crear("section", "grupo-carta mas-pedidos");
+    s.appendChild(cabecera("Los más pedidos", "", "Los favoritos del patio, a un toque", 0));
+    var carrusel = crear("div", "carrusel");
+    carrusel.setAttribute("role", "list");
+    MAS_PEDIDOS.forEach(function (m, i) {
+      var p = productoPorId(m.id);
+      if (!p) return;
+      var hoy = disponibleHoy(p);
+      var item = crear("article", "favorito" + (hoy ? "" : " no-hoy"));
+      item.setAttribute("role", "listitem");
+      item.style.setProperty("--i", i);
+      var foto = crear("div", "favorito__foto");
+      var img = document.createElement("img");
+      img.src = m.foto;
+      img.alt = p.nombre + " (foto referencial)";
+      img.loading = i < 2 ? "eager" : "lazy";
+      img.decoding = "async";
+      foto.appendChild(img);
+      foto.appendChild(crear("span", "favorito__ref", "Foto referencial"));
+      encuadrar(foto, img, m.recorte);
+      item.appendChild(foto);
+      var cuerpo = crear("div", "favorito__cuerpo");
+      var nombre = crear("button", "favorito__nombre", p.nombre);
+      nombre.type = "button";
+      nombre.addEventListener("click", function () { irAPlato(p); });
+      cuerpo.appendChild(nombre);
+      var precio = p.variantes ? p.variantes[Object.keys(p.variantes)[0]] : p.precio_pen;
+      var fila = crear("div", "favorito__fila");
+      fila.appendChild(crear("span", "favorito__precio", (p.variantes ? "desde " : "") + soles(precio)));
+      var mas = crear("button", "favorito__agregar");
+      mas.type = "button";
+      mas.disabled = !hoy;
+      mas.setAttribute("aria-label", hoy ? "Agregar " + p.nombre : p.nombre + ": disponible " + textoDias(p.disponible_dias));
+      mas.innerHTML = hoy
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+        : '<span>Hoy no</span>';
+      mas.addEventListener("click", function (e) {
+        if (p.variantes) { irAPlato(p); return; }   // con tamaños: se elige en su tarjeta
+        agregar(p, "", p.precio_pen, { boton: mas, x: e.clientX, y: e.clientY });
+      });
+      fila.appendChild(mas);
+      cuerpo.appendChild(fila);
+      item.appendChild(cuerpo);
+      carrusel.appendChild(item);
     });
-    s.appendChild(g);
+    s.appendChild(carrusel);
     return s;
   }
 
@@ -394,19 +468,18 @@
       });
     } else if (estado.categoria === "todas") {
       var especiales = PRODUCTOS.filter(especialDeHoy);
-      el.conteo.textContent = PRODUCTOS.length + " platos y bebidas en " + CATEGORIAS.length + " secciones";
+      el.conteo.textContent = "";
+      bloques.push(masPedidos());
       var estrella = grupo("Plato estrella del día", "estrella", "Entrada, segundo y postre, como en casa", [tarjetaMenuDelDia()], "hoy");
       estrella.querySelector(".cuenta").remove();   // un solo plato: el contador sobra
       bloques.push(estrella);
       if (especiales.length) {
         bloques.push(grupo("Hoy en el patio", "sol", "Lo que solo preparamos los " + NOMBRE_HOY + (/s$/.test(NOMBRE_HOY) ? "" : "s") + "… y hoy es su día", especiales.map(function (p) { return tarjetaProducto(p, []); }), "hoy"));
       }
-      // En vez de los 154 platos seguidos: un índice de secciones para ir directo a lo que se busca
-      bloques.push(indiceSecciones());
     } else {
       var cat = categoriaPorId[estado.categoria];
       var items = priorizar(PRODUCTOS.filter(function (p) { return p.categoria === cat.id; }));
-      el.conteo.textContent = items.length + (items.length === 1 ? " plato" : " platos") + " en " + cat.nombre;
+      el.conteo.textContent = "";
       var bloqueCat = grupo(cat.nombre, cat.id, cat.lema, items.map(function (p) { return tarjetaProducto(p, []); }));
       bloqueCat.appendChild(navegacionSecciones(cat.id));
       bloques.push(bloqueCat);
@@ -552,38 +625,200 @@
 
   /* ---------- Buscador reactivo ---------- */
 
-  function buscar() {
-    estado.texto = el.buscador.value;
-    el.limpiar.hidden = !estado.texto;
-    renderChips();
-    renderProductos(false);
+  /* ---------- Buscador a pantalla completa ----------
+     Se abre con la lupa. Resultados al instante mientras escribes, agregar sin salir,
+     búsquedas recientes y populares. Esc o "Cerrar" lo cierran. */
+  var capa = document.getElementById("buscador-capa");
+  var resultados = document.getElementById("buscador-resultados");
+  var botonLupa = document.getElementById("abrir-buscador");
+  var CLAVE_RECIENTES = "alpaqori_busquedas";
+  var POPULARES = ["Ceviche", "Lomo saltado", "Caldo de gallina", "Chaufa", "Chicha morada", "Pisco sour", "Desayuno"];
+  var ICONO_RELOJ = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 1.5"/></svg>';
+  var ICONO_MAS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  var ICONO_OK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var temporizadorCierre;
+
+  function leerRecientes() {
+    try {
+      var r = JSON.parse(localStorage.getItem(CLAVE_RECIENTES) || "[]");
+      return Array.isArray(r) ? r.filter(function (x) { return typeof x === "string"; }) : [];
+    } catch (e) { return []; }
+  }
+  function guardarReciente(texto) {
+    texto = texto.trim();
+    if (texto.length < 2) return;
+    var lista = leerRecientes().filter(function (x) { return normalizar(x) !== normalizar(texto); });
+    lista.unshift(texto);
+    try { localStorage.setItem(CLAVE_RECIENTES, JSON.stringify(lista.slice(0, 6))); } catch (e) { /* opcional */ }
   }
 
+  function abrirBuscador() {
+    clearTimeout(temporizadorCierre);
+    capa.hidden = false;
+    document.body.classList.add("buscando");
+    void capa.offsetWidth;   // fija el estado inicial antes de animar
+    capa.classList.add("abierta");
+    el.buscador.value = "";
+    el.limpiar.hidden = true;
+    pintarBusqueda();
+    el.buscador.focus({ preventScroll: true });   // dentro del toque: así iPhone abre el teclado
+  }
+
+  function cerrarBuscador(despues) {
+    if (capa.hidden) return;
+    capa.classList.remove("abierta");
+    document.body.classList.remove("buscando");
+    el.buscador.blur();
+    temporizadorCierre = setTimeout(function () {
+      capa.hidden = true;
+      if (typeof despues === "function") despues();
+      else botonLupa.focus({ preventScroll: true });
+    }, menosMovimiento ? 0 : 160);
+  }
+
+  function seccionBusqueda(titulo, accion) {
+    var s = crear("section", "busqueda-bloque");
+    var cab = crear("div", "busqueda-bloque__cabeza");
+    cab.appendChild(crear("h2", "", titulo));
+    if (accion) cab.appendChild(accion);
+    s.appendChild(cab);
+    return s;
+  }
+
+  function sugerencias(lista) {
+    var g = crear("div", "busqueda-sugerencias");
+    lista.forEach(function (t) {
+      var b = crear("button", "busqueda-sugerencia", t);
+      b.type = "button";
+      b.addEventListener("click", function () { el.buscador.value = t; pintarBusqueda(); el.buscador.focus({ preventScroll: true }); });
+      g.appendChild(b);
+    });
+    return g;
+  }
+
+  function filaResultado(p, palabras) {
+    var hoy = disponibleHoy(p);
+    var cat = categoriaPorId[p.categoria];
+    var fila = crear("div", "resultado" + (hoy ? "" : " no-hoy"));
+    fila.setAttribute("role", "listitem");
+    var ir = crear("button", "resultado__ir");
+    ir.type = "button";
+    var icono = crear("span", "resultado__icono");
+    icono.innerHTML = window.ALPAQORI_ARTE.icono(p.categoria);
+    ir.appendChild(icono);
+    var texto = crear("span", "resultado__texto");
+    var nombre = crear("strong");
+    resaltar(nombre, p.nombre, palabras);
+    texto.appendChild(nombre);
+    texto.appendChild(crear("small", "", (cat ? cat.nombre : "") + (hoy ? "" : " · Solo " + textoDias(p.disponible_dias).replace(/^los /, ""))));
+    ir.appendChild(texto);
+    var precio = p.variantes ? p.variantes[Object.keys(p.variantes)[0]] : p.precio_pen;
+    ir.appendChild(crear("span", "resultado__precio", (p.variantes ? "desde " : "") + soles(precio)));
+    ir.addEventListener("click", function () {
+      guardarReciente(el.buscador.value);
+      cerrarBuscador(function () { irAPlato(p); });
+    });
+    fila.appendChild(ir);
+    var mas = crear("button", "resultado__agregar");
+    mas.type = "button";
+    mas.disabled = !hoy;
+    mas.innerHTML = ICONO_MAS;
+    mas.setAttribute("aria-label", hoy ? (p.variantes ? "Elegir tamaño de " : "Agregar ") + p.nombre : p.nombre + ": hoy no está disponible");
+    mas.addEventListener("click", function (e) {
+      guardarReciente(el.buscador.value);
+      if (p.variantes) { cerrarBuscador(function () { irAPlato(p); }); return; }
+      agregar(p, "", p.precio_pen, { boton: mas, x: e.clientX, y: e.clientY });
+      mas.innerHTML = ICONO_OK;
+      mas.classList.add("hecho");
+      setTimeout(function () { mas.innerHTML = ICONO_MAS; mas.classList.remove("hecho"); }, 1200);
+    });
+    fila.appendChild(mas);
+    return fila;
+  }
+
+  function pintarBusqueda() {
+    var texto = el.buscador.value.trim();
+    el.limpiar.hidden = !el.buscador.value;
+    resultados.textContent = "";
+    var palabras = normalizar(texto).split(/\s+/).filter(function (w) { return w.length > 0; });
+
+    if (!palabras.length) {
+      var recientes = leerRecientes();
+      if (recientes.length) {
+        var borrar = crear("button", "busqueda-accion", "Borrar");
+        borrar.type = "button";
+        borrar.addEventListener("click", function () {
+          try { localStorage.removeItem(CLAVE_RECIENTES); } catch (e) { /* opcional */ }
+          pintarBusqueda();
+        });
+        var bloqueR = seccionBusqueda("Recientes", borrar);
+        var listaR = crear("div", "busqueda-recientes");
+        recientes.forEach(function (t) {
+          var b = crear("button", "busqueda-reciente");
+          b.type = "button";
+          b.innerHTML = ICONO_RELOJ;
+          b.appendChild(document.createTextNode(t));
+          b.addEventListener("click", function () { el.buscador.value = t; pintarBusqueda(); });
+          listaR.appendChild(b);
+        });
+        bloqueR.appendChild(listaR);
+        resultados.appendChild(bloqueR);
+      }
+      var bloqueP = seccionBusqueda("Lo más buscado");
+      bloqueP.appendChild(sugerencias(POPULARES));
+      resultados.appendChild(bloqueP);
+      return;
+    }
+
+    var encontrados = priorizar(PRODUCTOS.filter(function (p) { return coincide(p, palabras); }));
+    if (!encontrados.length) {
+      var vacio = crear("div", "busqueda-vacia");
+      vacio.appendChild(crear("p", "busqueda-vacia__titulo", "No encontramos «" + texto + "»"));
+      vacio.appendChild(crear("p", "", "Revisa cómo se escribe o prueba con algo parecido:"));
+      resultados.appendChild(vacio);
+      resultados.appendChild(sugerencias(POPULARES.slice(0, 5)));
+      return;
+    }
+    resultados.appendChild(crear("p", "busqueda-conteo", encontrados.length + (encontrados.length === 1 ? " resultado" : " resultados")));
+    var lista = crear("div", "busqueda-lista");
+    lista.setAttribute("role", "list");
+    encontrados.slice(0, 40).forEach(function (p) { lista.appendChild(filaResultado(p, palabras)); });
+    resultados.appendChild(lista);
+  }
+
+  // Compatibilidad: sinResultados() llama a buscar()
+  function buscar() { pintarBusqueda(); }
+
   var espera;
+  botonLupa.addEventListener("click", abrirBuscador);
+  document.getElementById("cerrar-buscador").addEventListener("click", function () { cerrarBuscador(); });
   el.buscador.addEventListener("input", function () {
     clearTimeout(espera);
-    espera = setTimeout(buscar, 120);
+    espera = setTimeout(pintarBusqueda, 90);
   });
   el.buscador.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") { el.buscador.value = ""; buscar(); }
-    if (e.key === "Enter") el.buscador.blur();   // en el celular, cierra el teclado para ver los resultados
+    if (e.key === "Escape") {
+      e.preventDefault();
+      if (el.buscador.value) { el.buscador.value = ""; pintarBusqueda(); }
+      else cerrarBuscador();
+    }
+    if (e.key === "Enter") {
+      var primero = resultados.querySelector(".resultado__ir");
+      if (primero) primero.click();
+    }
   });
   el.limpiar.addEventListener("click", function () {
     el.buscador.value = "";
-    buscar();
-    el.buscador.focus();
+    pintarBusqueda();
+    el.buscador.focus({ preventScroll: true });
   });
-
-  // El placeholder va cambiando con ideas reales de la carta
-  (function rotarPlaceholder() {
-    var ideas = ["Busca: ceviche, caldo, chaufa…", "¿Antojo de un caldo de gallina?", "Prueba: lomo saltado", "¿Una chicha morada bien helada?", "Busca: pisco sour"];
-    var i = 0;
-    setInterval(function () {
-      if (document.activeElement === el.buscador || el.buscador.value) return;
-      i = (i + 1) % ideas.length;
-      el.buscador.placeholder = ideas[i];
-    }, 3200);
-  })();
+  capa.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && e.target !== el.buscador) cerrarBuscador();
+  });
+  // "/" abre el buscador en computadora
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && capa.hidden && !/input|textarea|select/i.test(e.target.tagName)) { e.preventDefault(); abrirBuscador(); }
+  });
 
   /* ---------- Totales ---------- */
 

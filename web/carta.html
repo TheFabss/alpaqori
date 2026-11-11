@@ -37,22 +37,21 @@
     <div class="estado-movil"><span class="estado" data-estado style="background: rgba(42,33,29,.08); color: var(--bg-tinta);"><span class="punto" aria-hidden="true"></span><span class="texto"></span></span></div>
     <p class="saludo" id="saludo">Bienvenido a Tierra de Oro. ¿Qué historia vamos a almorzar hoy?</p>
     <h1 id="titulo-carta"><small>Tierra de Oro · Chosica</small>La carta del patio</h1>
-    <p class="bajada">Precios en soles, incluyen IGV. Elige tus platos, arma tu pedido y envíalo por WhatsApp.</p>
     <div class="hoy-toca" id="hoy-toca" hidden></div>
   </div>
   <svg class="ondas" data-ondas viewBox="0 0 1440 34" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"></svg>
 </section>
 
-<!-- ============ Buscador y filtros ============ -->
+<!-- ============ Lupa y secciones ============ -->
 <div class="herramientas">
-  <div class="contenedor">
-    <div class="caja-busqueda">
-      <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <label class="solo-lectores" for="buscador">Buscar en la carta</label>
-      <input id="buscador" class="buscador" type="search" placeholder="Busca: ceviche, caldo, chaufa…" autocomplete="off" enterkeyhint="search">
-      <button class="limpiar" id="limpiar" type="button" aria-label="Borrar búsqueda" hidden>×</button>
+  <div class="contenedor herramientas__fila">
+    <button type="button" class="boton-lupa" id="abrir-buscador" aria-label="Buscar en la carta" aria-haspopup="dialog" aria-controls="buscador-capa">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>
+    </button>
+    <div class="carril" id="carril">
+      <div id="chips" class="chips" role="group" aria-label="Secciones de la carta"></div>
+      <span class="chips__indicador" id="chips-indicador" aria-hidden="true"></span>
     </div>
-    <div id="chips" class="chips" role="group" aria-label="Secciones de la carta"></div>
   </div>
 </div>
 
@@ -120,11 +119,6 @@
 <footer class="pie-pagina">
   <div class="contenedor">
     <p class="lema">Cada plato, una historia por contar</p>
-    <div class="redes">
-      <a href="index.html">← Volver al inicio</a>
-      <a data-config="instagram" href="#" target="_blank" rel="noopener">Instagram</a>
-      <a data-config="facebook" href="#" target="_blank" rel="noopener">Facebook</a>
-    </div>
     <p class="legal">Precios incluyen IGV. Si tienes alguna alergia o intolerancia, avísanos en las indicaciones.</p>
     <div class="libro-ref" role="img" aria-label="Imagen referencial del libro de reclamaciones">
       <span class="libro"></span> Libro de Reclamaciones (imagen referencial)
@@ -137,6 +131,22 @@
   <span class="total-barra" id="barra-total">S/ 0.00</span>
   <span class="boton chico">Ver pedido</span>
 </a>
+
+<!-- ============ Buscador a pantalla completa ============ -->
+<div class="buscador-capa" id="buscador-capa" role="dialog" aria-modal="true" aria-label="Buscar en la carta" hidden>
+  <div class="buscador-capa__barra">
+    <div class="caja-busqueda">
+      <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20 20"/></svg>
+      <label class="solo-lectores" for="buscador">Buscar un plato o bebida</label>
+      <input id="buscador" class="buscador" type="search" placeholder="Plato, bebida o ingrediente" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-controls="buscador-resultados">
+      <button class="limpiar" id="limpiar" type="button" aria-label="Borrar búsqueda" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
+      </button>
+    </div>
+    <button type="button" class="buscador-capa__cerrar" id="cerrar-buscador">Cerrar</button>
+  </div>
+  <div class="buscador-capa__cuerpo" id="buscador-resultados" aria-live="polite"></div>
+</div>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
