@@ -78,7 +78,7 @@ console.log('\n3) Menú del día');
   let r = procesar(e, 'hola alpaqori, que hay de almuerzo?');
   prueba('"almuerzo" muestra el menú del día con su precio', /MENÚ DEL DÍA/.test(texto(r)) && /Sancochado/.test(texto(r)) && /S\/ 18\.00/.test(texto(r)), texto(r));
   r = conversar(e, ['1', '2', '3']);
-  prueba('pide cuántos menús con entrada y segundo', /Sancochado \+ Pollo a las finas hierbas/.test(texto(r)), texto(r));
+  prueba('pide cuántos menús con entrada y segundo', /Llunca de gallina \+ Chuleta en salsa de champiñones/.test(texto(r)), texto(r));
   r = procesar(e, '2');
   prueba('dos menús suman S/ 36', /S\/ 36\.00/.test(texto(r)), texto(r));
   r = conversar(e, ['4', '1', 'Ana', 'no', '1']);

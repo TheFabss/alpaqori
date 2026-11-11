@@ -12,24 +12,26 @@ window.ALPAQORI_CATALOGO = {
   },
   "menu_del_dia": {
     "plantilla": "unica para todos los dias; se actualiza cada dia",
-    "referencia": "Menu Campechano (sabado)",
-    "fecha": "2026-10-24",
+    "referencia": "Menu Campechano (miercoles)",
+    "fecha": "2026-11-11",
     "precio_pen": 18,
     "horario": "[CONFIRMAR]",
     "entradas": [
-      "Patasca",
       "Sancochado",
-      "Causa de pollo"
+      "Llunca de gallina",
+      "Chicharrón de pota",
+      "Tequeños"
     ],
     "segundos": [
-      "Enrollado de pollo con pure de papa",
-      "Arroz con pollo",
-      "Pollo a las finas hierbas con spaghetti en salsa rosa"
+      "Pollo a la norteña con frejoles",
+      "Pollo a la naranja con papas doradas",
+      "Chuleta en salsa de champiñones",
+      "Milanesa con coditos en salsa de pesto"
     ],
     "postre": [
-      "Mazamorra de calabaza"
+      "Gelatina"
     ],
-    "imagen": "images/23.webp"
+    "imagen": "images/menu-del-dia.webp"
   },
   "productos": [
     {
