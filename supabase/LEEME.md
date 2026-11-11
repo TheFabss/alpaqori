@@ -18,7 +18,7 @@ Falta crear las tablas. Una sola vez, en Supabase > **SQL Editor**, pega y ejecu
 - `mesas-qr.html`: genera e imprime los QR (necesita la dirección pública de la web).
 - Delivery y recojo siguen por WhatsApp, con el mismo mensaje que lee el bot.
 
-Seguridad: en la web solo va la clave *publishable*. La clave secreta (service_role) nunca se pega en ningún archivo.
+Seguridad: en la web solo va la clave *publishable*. La clave secreta (sb_secret o service_role) va únicamente en `bot-whatsapp/.env`, que no se sube a GitHub; nunca en la web.
 Los precios se recalculan en el servidor con la tabla `precios`: el navegador no puede cambiarlos.
 
 ## Pedidos de WhatsApp (delivery y recojo) en cocina
