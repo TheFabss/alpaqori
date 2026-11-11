@@ -244,7 +244,7 @@
 
   function renderChips() {
     el.chips.textContent = "";
-    var opciones = [{ id: "todas", nombre: "Todo" }].concat(CATEGORIAS);
+    var opciones = [{ id: "todas", nombre: "Inicio" }].concat(CATEGORIAS);
     opciones.forEach(function (c) {
       var b = crear("button", "chip", c.nombre);
       b.type = "button";
@@ -302,6 +302,64 @@
     return s;
   }
 
+  function irASeccion(id) {
+    estado.texto = "";
+    el.buscador.value = "";
+    el.limpiar.hidden = true;
+    cambiarCategoria(id, true);
+    var y = el.lista.getBoundingClientRect().top + window.scrollY - 190;
+    window.scrollTo({ top: Math.max(0, y), behavior: menosMovimiento ? "auto" : "smooth" });
+  }
+
+  // Índice de la carta: una baldosa por sección con su ícono, lema y cuántos platos tiene
+  function indiceSecciones() {
+    var s = crear("section", "grupo-carta indice-secciones");
+    s.appendChild(cabecera("¿Qué se te antoja?", "", "Elige una sección o busca tu plato arriba", 0));
+    var g = crear("div", "baldosas");
+    CATEGORIAS.forEach(function (c, i) {
+      var n = PRODUCTOS.filter(function (p) { return p.categoria === c.id; }).length;
+      var b = crear("button", "baldosa");
+      b.type = "button";
+      b.style.setProperty("--i", Math.min(i, MAX_ESCALON));
+      b.setAttribute("data-revelar", "");
+      var icono = crear("span", "baldosa__icono");
+      icono.innerHTML = window.ALPAQORI_ARTE.icono(c.id);
+      b.appendChild(icono);
+      var texto = crear("span", "baldosa__texto");
+      texto.appendChild(crear("strong", "", c.nombre));
+      texto.appendChild(crear("small", "", c.lema));
+      b.appendChild(texto);
+      b.appendChild(crear("span", "baldosa__n", String(n)));
+      b.setAttribute("aria-label", c.nombre + ", " + n + " platos");
+      b.addEventListener("click", function () { irASeccion(c.id); });
+      g.appendChild(b);
+    });
+    s.appendChild(g);
+    return s;
+  }
+
+  // Al final de cada sección: anterior, todas y siguiente (sin volver a subir)
+  function navegacionSecciones(id) {
+    var i = CATEGORIAS.findIndex(function (c) { return c.id === id; });
+    var nav = crear("nav", "nav-secciones");
+    nav.setAttribute("aria-label", "Otras secciones");
+    function boton(c, clase, texto) {
+      var b = crear("button", "nav-secciones__boton " + clase);
+      b.type = "button";
+      b.appendChild(crear("small", "", texto));
+      b.appendChild(crear("strong", "", c.nombre));
+      b.addEventListener("click", function () { irASeccion(c.id); });
+      return b;
+    }
+    if (i > 0) nav.appendChild(boton(CATEGORIAS[i - 1], "anterior", "← Anterior"));
+    var todas = crear("button", "nav-secciones__boton todas", "Todas las secciones");
+    todas.type = "button";
+    todas.addEventListener("click", function () { irASeccion("todas"); });
+    nav.appendChild(todas);
+    if (i < CATEGORIAS.length - 1) nav.appendChild(boton(CATEGORIAS[i + 1], "siguiente", "Siguiente →"));
+    return nav;
+  }
+
   function separador() {
     var t = crear("div", "telar claro");
     t.setAttribute("data-telar", "");
@@ -343,15 +401,15 @@
       if (especiales.length) {
         bloques.push(grupo("Hoy en el patio", "sol", "Lo que solo preparamos los " + NOMBRE_HOY + (/s$/.test(NOMBRE_HOY) ? "" : "s") + "… y hoy es su día", especiales.map(function (p) { return tarjetaProducto(p, []); }), "hoy"));
       }
-      CATEGORIAS.forEach(function (c) {
-        var deEsta = priorizar(PRODUCTOS.filter(function (p) { return p.categoria === c.id && !especialDeHoy(p); }));
-        if (deEsta.length) bloques.push(grupo(c.nombre, c.id, c.lema, deEsta.map(function (p) { return tarjetaProducto(p, []); })));
-      });
+      // En vez de los 154 platos seguidos: un índice de secciones para ir directo a lo que se busca
+      bloques.push(indiceSecciones());
     } else {
       var cat = categoriaPorId[estado.categoria];
       var items = priorizar(PRODUCTOS.filter(function (p) { return p.categoria === cat.id; }));
       el.conteo.textContent = items.length + (items.length === 1 ? " plato" : " platos") + " en " + cat.nombre;
-      bloques.push(grupo(cat.nombre, cat.id, cat.lema, items.map(function (p) { return tarjetaProducto(p, []); })));
+      var bloqueCat = grupo(cat.nombre, cat.id, cat.lema, items.map(function (p) { return tarjetaProducto(p, []); }));
+      bloqueCat.appendChild(navegacionSecciones(cat.id));
+      bloques.push(bloqueCat);
     }
 
     bloques.forEach(function (b, i) {
@@ -1036,6 +1094,43 @@
     if (enControl) tarjeta.classList.add("viva");   // el botón ya hizo su trabajo; solo se enciende
     else tarjeta.classList.toggle("viva");
   });
+
+  /* ---------- "Mi pedido": hoja a pantalla completa en celular; en computadora, desplazamiento ---------- */
+  var esCelular = window.matchMedia("(max-width: 999px)");
+  var hoja = document.getElementById("pedido");
+  var cerrarHoja = crear("button", "cerrar-pedido", "✕");
+  cerrarHoja.type = "button";
+  cerrarHoja.setAttribute("aria-label", "Cerrar mi pedido");
+  hoja.insertBefore(cerrarHoja, hoja.firstChild);
+  var ultimoFoco = null;
+
+  function abrirPedido(e) {
+    if (e) e.preventDefault();
+    if (!esCelular.matches) {
+      hoja.scrollIntoView({ behavior: menosMovimiento ? "auto" : "smooth", block: "start" });
+      reiniciarAnimacion(hoja, "llamar");
+      return;
+    }
+    ultimoFoco = document.activeElement;
+    document.body.classList.add("pedido-abierto");
+    hoja.setAttribute("role", "dialog");
+    hoja.setAttribute("aria-modal", "true");
+    hoja.scrollTop = 0;
+    cerrarHoja.focus({ preventScroll: true });
+  }
+  function cerrarPedido() {
+    if (!document.body.classList.contains("pedido-abierto")) return;
+    document.body.classList.remove("pedido-abierto");
+    hoja.removeAttribute("role");
+    hoja.removeAttribute("aria-modal");
+    if (ultimoFoco) ultimoFoco.focus({ preventScroll: true });
+  }
+  el.verPedido.addEventListener("click", abrirPedido);
+  el.barra.addEventListener("click", abrirPedido);
+  cerrarHoja.addEventListener("click", cerrarPedido);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") cerrarPedido(); });
+  esCelular.addEventListener("change", function () { if (!esCelular.matches) cerrarPedido(); });
+  if (location.hash === "#pedido") setTimeout(abrirPedido, 0);
 
   if (MESA) iniciarModoMesa();
   iniciarGPS();

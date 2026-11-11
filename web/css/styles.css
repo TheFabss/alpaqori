@@ -1199,3 +1199,105 @@ body:has(.modal-alpa[open]) .asis { display: none; }
 }
 @media (max-width: 520px) { .acciones-topbar .mi-cuenta { display: none; } .acciones-topbar { gap: 6px; } }
 @media (max-width: 400px) { .topbar .marca span { font-size: 16px; } }
+
+/* ==========================================================
+   Entrega 5 · Carta más corta, hoja de pedido y barra compacta
+   ========================================================== */
+
+/* ---------- Marca más chica en la barra de la carta (no empuja los botones) ---------- */
+.pagina-carta .topbar .marca { gap: 8px; min-width: 0; }
+.pagina-carta .topbar .marca span { font-size: 18px; letter-spacing: .05em; }
+@media (max-width: 520px) {
+  .pagina-carta .topbar .contenedor { gap: 8px; }
+  .pagina-carta .topbar .isotipo { width: 38px; height: 38px; }
+  .pagina-carta .topbar .marca span { font-size: 15px; letter-spacing: .04em; }
+}
+@media (max-width: 360px) { .pagina-carta .topbar .marca span { display: none; } }
+
+/* ---------- Índice de secciones (vista Inicio) ---------- */
+.baldosas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+@media (max-width: 520px) { .baldosas { grid-template-columns: 1fr 1fr; gap: 8px; } }
+.baldosa {
+  position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 12px;
+  min-height: 74px; padding: 12px 14px; border-radius: 16px; border: 1px solid #E5D5BC;
+  background: var(--papel-retablo, #FFFDF9); color: var(--bg-tinta); text-align: left; cursor: pointer;
+  box-shadow: 0 6px 18px -8px rgba(42, 33, 29, .18);
+  transition: transform .3s var(--ease-telar), border-color .2s, box-shadow .3s, opacity .8s var(--ease-telar);
+}
+.baldosa:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .baldosa:hover { transform: translateY(-2px); border-color: var(--brand-dorado); box-shadow: 0 12px 24px -10px rgba(42, 33, 29, .25); }
+}
+.baldosa__icono { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--coral-suave); color: var(--coral-texto); }
+.baldosa__icono svg { width: 24px; height: 24px; }
+.baldosa__texto { display: grid; gap: 1px; min-width: 0; padding-right: 22px; }
+.baldosa__texto strong { font: 600 16px/1.15 var(--font-display); }
+.baldosa__texto small { font-size: 12px; color: var(--tinta-suave); line-height: 1.3; }
+.baldosa__n { position: absolute; top: 9px; right: 10px; font-size: 11px; font-weight: 700; color: #7A5A1E; background: var(--dorado-suave); padding: 1px 7px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .baldosa { grid-template-columns: 1fr; padding: 12px; min-height: 0; }
+  .baldosa__icono { width: 34px; height: 34px; }
+  .baldosa__texto small { display: none; }
+}
+
+/* ---------- Anterior / todas / siguiente al final de cada sección ---------- */
+.nav-secciones { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; margin-top: 18px; }
+.nav-secciones__boton {
+  display: grid; gap: 1px; min-height: 52px; padding: 8px 14px; border-radius: 14px; border: 1.5px solid var(--borde);
+  background: var(--papel); color: var(--bg-tinta); font: 600 14px var(--font-body); cursor: pointer;
+  transition: transform .2s var(--ease-telar), border-color .2s;
+}
+.nav-secciones__boton small { font-size: 11px; font-weight: 700; color: var(--coral-texto); }
+.nav-secciones__boton strong { font: 600 15px var(--font-display); }
+.nav-secciones__boton.anterior { text-align: left; grid-column: 1; }
+.nav-secciones__boton.todas { grid-column: 2; align-content: center; }
+.nav-secciones__boton.siguiente { text-align: right; grid-column: 3; }
+.nav-secciones__boton:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .nav-secciones__boton:hover { border-color: var(--brand-dorado); } }
+@media (max-width: 520px) {
+  .nav-secciones { grid-template-columns: 1fr 1fr; }
+  .nav-secciones__boton.todas { grid-column: 1 / -1; grid-row: 2; }
+  .nav-secciones__boton.anterior { grid-column: 1; }
+  .nav-secciones__boton.siguiente { grid-column: 2; }
+}
+
+/* ---------- Tarjetas más compactas en celular ---------- */
+@media (max-width: 640px) {
+  .grilla { gap: 10px; }
+  .plato { min-height: 0; padding: 14px 14px 12px 20px; }
+  .plato h3 { font-size: 17px; }
+  .plato h3, .plato .badge-hoy, .plato .etiqueta-dias, .plato .desc { margin-right: 70px; }
+  .plato .desc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 13px; }
+  .plato.viva .desc { -webkit-line-clamp: unset; display: block; }
+  .plato .fila { padding-top: 6px; }
+  .precio-item { font-size: 19px; }
+}
+
+/* ---------- "Mi pedido" como hoja a pantalla completa en celular ---------- */
+.cerrar-pedido { display: none; }
+@media (max-width: 999px) {
+  .pedido {
+    position: fixed; inset: 0; z-index: 70; margin: 0; max-height: none; overflow-y: auto; overscroll-behavior: contain;
+    border-radius: 0; padding: 22px 18px calc(28px + env(safe-area-inset-bottom));
+    visibility: hidden; transform: translateY(100%);
+    transition: transform .42s var(--ease-telar), visibility 0s linear .42s;
+  }
+  .pedido-abierto .pedido { visibility: visible; transform: none; transition: transform .42s var(--ease-telar), visibility 0s; }
+  .pedido-abierto { overflow: hidden; }
+  .pedido-abierto .barra-carrito, .pedido-abierto .asis { display: none !important; }
+  .cerrar-pedido {
+    display: grid; place-items: center; position: sticky; top: -6px; float: right; z-index: 2;
+    width: 44px; height: 44px; margin: -8px -6px 0 0; border: 0; border-radius: 12px;
+    background: var(--bg-crema); color: var(--bg-tinta); font-size: 18px; cursor: pointer;
+  }
+  .pedido h2 { padding-right: 48px; }
+}
+/* En computadora: al tocar "Mi pedido" la columna da un pequeño aviso visual */
+.pedido.llamar { animation: llamar-pedido .7s var(--ease-huayno); }
+@keyframes llamar-pedido { 0% { transform: none; } 35% { transform: scale(1.015); box-shadow: 0 0 0 4px rgba(201, 164, 92, .45), 0 16px 40px -12px rgba(42, 33, 29, .18); } 100% { transform: none; } }
+.fiesta, .toast { z-index: 80; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pedido, .pedido-abierto .pedido { transition: none; }
+  .pedido.llamar { animation: none; }
+}
