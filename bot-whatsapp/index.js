@@ -431,4 +431,15 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-client.initialize();
+/* WhatsApp Web cambia seguido. Si la sesión guardada se cerró, la página de "sesión cerrada" no trae
+   lo que la librería necesita y falla con "reading 'Socket'" antes de mostrar el QR. */
+client.initialize().catch((err) => {
+  const texto = String((err && err.message) || err);
+  console.error('\n❌ No se pudo abrir WhatsApp Web:', texto);
+  if (/Socket|Execution context was destroyed/.test(texto)) {
+    console.error('   La sesión vinculada de este bot se cerró (o WhatsApp cambió su web).');
+    console.error('   Revisa en el celular: WhatsApp > Dispositivos vinculados. Si ya no aparece, copia una sesión');
+    console.error('   que funcione a .wwebjs_auth/session-alpaqori-bot (ver LEEME.md) o usa: npm run api');
+  }
+  process.exit(1);
+});

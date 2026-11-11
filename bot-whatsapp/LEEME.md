@@ -61,3 +61,15 @@ Se escriben en **"Mensaje a ti mismo"** del WhatsApp del bot:
 ## Pendiente `[CONFIRMAR]`
 Precio y horario del menú del día · número y titular de Yape/Plin · zonas y costo final de delivery ·
 URL pública de la carta web (`URL_CARTA`).
+
+## Si `npm start` falla con "reading 'Socket'" o "Execution context was destroyed"
+
+La sesión vinculada se cerró. Con la versión actual de WhatsApp Web, la librería se cae antes de mostrar un QR nuevo.
+
+1. Cierra cualquier otro bot que use el mismo celular (por ejemplo el de Borgorosso), porque no pueden estar prendidos a la vez.
+2. Copia una sesión que funcione. Por ejemplo, la de Borgorosso, que está vinculada al celular de pruebas:
+   - Renombra `.wwebjs_auth/session-alpaqori-bot` a `session-alpaqori-bot.viejo`.
+   - Copia `C:\proyectos\borgorosso-bot\.wwebjs_auth\session-borgorosso-demo` como `.wwebjs_auth/session-alpaqori-bot`.
+3. `npm start` de nuevo. Debe decir "autenticado" y luego "listo", sin pedir QR.
+
+Alternativa sin WhatsApp Web: `npm run api` (API oficial de Meta, con ngrok y token vigente en `.env`).
