@@ -457,6 +457,10 @@ function productoDeLinea(nombreWeb) {
   const exacto = PRODUCTOS.find(p => normalizar(p.nombre) === n);
   if (exacto) return { p: exacto, variante: '' };
   const m = nombreWeb.match(/^(.+?) \(([^()]+)\)$/);
+  // Menú del día desde la carta web: "Menú del día (entrada + segundo + postre)"
+  if (m && normalizar(m[1]) === normalizar('Menú del día')) {
+    return { p: { id: 'menu-del-dia', nombre: 'Menú del día', variantes: { [m[2]]: precioMenu() }, disponible_dias: [] }, variante: m[2] };
+  }
   if (m) {
     const base = PRODUCTOS.find(p => normalizar(p.nombre) === normalizar(m[1]) && p.variantes);
     const variante = base && Object.keys(base.variantes).find(k => normalizar(k) === normalizar(m[2]));

@@ -1469,3 +1469,23 @@ body.buscando .asis, body.buscando .barra-carrito { display: none !important; }
   .chips__indicador, .buscador-capa, .buscador-capa__barra, .buscador-capa__cuerpo { transition: none; }
   .favorito { animation: none; }
 }
+
+/* ==========================================================
+   Entrega 7 · Menú del día con opciones visibles (web y mesa iguales)
+   ========================================================== */
+.plato.destacado .eleccion-menu { margin: 10px 0 0; padding: 0; border: 0; min-width: 0; }
+.plato.destacado .eleccion-menu legend { padding: 0; margin-bottom: 6px; font: 700 13px var(--font-body); color: var(--bg-tinta); }
+.eleccion-menu__opciones { display: flex; flex-wrap: wrap; gap: 6px; }
+.opcion-menu {
+  min-height: 40px; padding: 8px 12px; border-radius: 12px; border: 1.5px solid #E5D5BC; background: var(--papel);
+  color: var(--bg-tinta); font: 600 13.5px/1.25 var(--font-body); text-align: left; cursor: pointer;
+  transition-property: transform, background-color, border-color, color; transition-duration: 160ms; transition-timing-function: ease-out;
+}
+.opcion-menu:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .opcion-menu:hover { border-color: var(--brand-dorado); } }
+.opcion-menu[aria-pressed="true"] { background: var(--bg-tinta); border-color: var(--bg-tinta); color: var(--bg-crema); }
+.opcion-menu:focus-visible { outline: 3px solid var(--brand-dorado); outline-offset: 2px; }
+.eleccion-menu__postre { margin: 10px 0 0; font-size: 13.5px; color: var(--tinta-suave); }
+.eleccion-menu__postre strong { color: var(--bg-tinta); }
+.plato.destacado .desc { display: none; }
+.plato.destacado { grid-column: 1 / -1; }

@@ -14,6 +14,8 @@
   var CATALOGO = window.ALPAQORI_CATALOGO;
   var PRODUCTOS = CATALOGO.productos;
   var A = window.ALPAQORI;
+  // La carta abre en Platos de fondo: es lo que más se pide
+  var SECCION_INICIAL = "platos-de-fondo";
 
   // Pedido desde el QR de una mesa (carta.html?mesa=5): llega directo a cocina, sin WhatsApp.
   // Sin ?mesa la carta sigue igual: recojo o delivery por WhatsApp.
@@ -116,7 +118,7 @@
 
   function categoriaDesdeHash() {
     var m = location.hash.match(/cat=([\w-]+)/);
-    return m ? m[1] : "todas";
+    return m && categoriaPorId[m[1]] ? m[1] : SECCION_INICIAL;
   }
 
   function cargarCarrito() {
@@ -263,7 +265,7 @@
 
   function renderChips() {
     if (!el.chips.querySelector(".chip")) {
-      [{ id: "todas", nombre: "Inicio" }].concat(CATEGORIAS).forEach(function (c) {
+      CATEGORIAS.forEach(function (c) {
         var b = crear("button", "chip", c.nombre);
         b.type = "button";
         b.dataset.cat = c.id;
@@ -290,8 +292,8 @@
   }
 
   function cambiarCategoria(id, animar) {
-    estado.categoria = categoriaPorId[id] ? id : "todas";
-    history.replaceState(null, "", estado.categoria === "todas" ? location.pathname : "#cat=" + estado.categoria);
+    estado.categoria = categoriaPorId[id] ? id : SECCION_INICIAL;
+    history.replaceState(null, "", location.pathname + location.search + "#cat=" + estado.categoria);
     renderChips();
     renderProductos(animar);
   }
@@ -426,10 +428,6 @@
       return b;
     }
     if (i > 0) nav.appendChild(boton(CATEGORIAS[i - 1], "anterior", "← Anterior"));
-    var todas = crear("button", "nav-secciones__boton todas", "Todas las secciones");
-    todas.type = "button";
-    todas.addEventListener("click", function () { irASeccion("todas"); });
-    nav.appendChild(todas);
     if (i < CATEGORIAS.length - 1) nav.appendChild(boton(CATEGORIAS[i + 1], "siguiente", "Siguiente →"));
     return nav;
   }
@@ -466,21 +464,22 @@
         var deEsta = priorizar(encontrados.filter(function (p) { return p.categoria === c.id; }));
         if (deEsta.length) bloques.push(grupo(c.nombre, c.id, "", deEsta.map(function (p) { return tarjetaProducto(p, palabras); })));
       });
-    } else if (estado.categoria === "todas") {
-      var especiales = PRODUCTOS.filter(especialDeHoy);
-      el.conteo.textContent = "";
-      bloques.push(masPedidos());
-      var estrella = grupo("Plato estrella del día", "estrella", "Entrada, segundo y postre, como en casa", [tarjetaMenuDelDia()], "hoy");
-      estrella.querySelector(".cuenta").remove();   // un solo plato: el contador sobra
-      bloques.push(estrella);
-      if (especiales.length) {
-        bloques.push(grupo("Hoy en el patio", "sol", "Lo que solo preparamos los " + NOMBRE_HOY + (/s$/.test(NOMBRE_HOY) ? "" : "s") + "… y hoy es su día", especiales.map(function (p) { return tarjetaProducto(p, []); }), "hoy"));
-      }
     } else {
+      // Cada sección: "Los más pedidos" arriba y luego sus platos.
+      // En Platos de fondo (la sección de entrada) también el menú del día y lo especial de hoy.
       var cat = categoriaPorId[estado.categoria];
       var items = priorizar(PRODUCTOS.filter(function (p) { return p.categoria === cat.id; }));
       el.conteo.textContent = "";
-      var bloqueCat = grupo(cat.nombre, cat.id, cat.lema, items.map(function (p) { return tarjetaProducto(p, []); }));
+      bloques.push(masPedidos());
+      var tarjetas = items.map(function (p) { return tarjetaProducto(p, []); });
+      if (cat.id === SECCION_INICIAL) {
+        var especiales = PRODUCTOS.filter(function (p) { return especialDeHoy(p) && p.categoria !== cat.id; });
+        if (especiales.length) {
+          bloques.push(grupo("Hoy en el patio", "sol", "Lo que solo preparamos los " + NOMBRE_HOY + (/s$/.test(NOMBRE_HOY) ? "" : "s") + "… y hoy es su día", especiales.map(function (p) { return tarjetaProducto(p, []); }), "hoy"));
+        }
+        tarjetas.unshift(tarjetaMenuDelDia());
+      }
+      var bloqueCat = grupo(cat.nombre, cat.id, cat.lema, tarjetas);
       bloqueCat.appendChild(navegacionSecciones(cat.id));
       bloques.push(bloqueCat);
     }
@@ -535,38 +534,41 @@
     var precio = crear("span", "precio-item", typeof menu.precio_pen === "number" ? soles(menu.precio_pen) : "Precio por confirmar");
     if (typeof menu.precio_pen !== "number") precio.style.fontSize = "16px";
     fila.appendChild(precio);
-    if (MESA && typeof menu.precio_pen === "number") {
-      // En la mesa el menú se suma al pedido: el cliente elige entrada y segundo
-      var eleccion = crear("div", "eleccion-menu");
-      function selector(etiqueta, opciones) {
-        var s = document.createElement("select");
-        s.setAttribute("aria-label", etiqueta);
-        opciones.forEach(function (o) { var op = crear("option", "", o); op.value = o; s.appendChild(op); });
-        return s;
-      }
-      var selEntrada = selector("Entrada del menú", menu.entradas);
-      var selSegundo = selector("Segundo del menú", menu.segundos);
-      eleccion.appendChild(selEntrada);
-      eleccion.appendChild(selSegundo);
-      card.appendChild(eleccion);
-      var sumar = crear("button", "btn-agregar", "+ Agregar");
-      sumar.type = "button";
-      sumar.setAttribute("aria-label", "Agregar menú del día");
-      sumar.addEventListener("click", function (e) {
-        agregar({ id: "menu-del-dia", nombre: "Menú del día" }, "", menu.precio_pen, { boton: sumar, x: e.clientX, y: e.clientY });
-        var item = estado.carrito.find(function (i) { return i.clave === "menu-del-dia"; });
-        var texto = selEntrada.value + " + " + selSegundo.value;
-        if (item) { item.nota = item.nota ? item.nota + "; " + texto : texto; guardarCarrito(); renderCarrito(); }
+    if (typeof menu.precio_pen !== "number") { card.appendChild(fila); return card; }
+
+    // Igual en la web y en la mesa: el cliente ve todas las opciones y toca la que quiere
+    var elegido = { entrada: menu.entradas[0], segundo: menu.segundos[0] };
+    function selectorVisible(titulo, clave, opciones) {
+      var grupoOpc = crear("fieldset", "eleccion-menu");
+      grupoOpc.appendChild(crear("legend", "", titulo));
+      var lista = crear("div", "eleccion-menu__opciones");
+      opciones.forEach(function (o, i) {
+        var b = crear("button", "opcion-menu", o);
+        b.type = "button";
+        b.setAttribute("aria-pressed", String(i === 0));
+        b.addEventListener("click", function () {
+          elegido[clave] = o;
+          lista.querySelectorAll(".opcion-menu").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        });
+        lista.appendChild(b);
       });
-      fila.appendChild(sumar);
-      card.appendChild(fila);
-      return card;
+      grupoOpc.appendChild(lista);
+      return grupoOpc;
     }
-    var enlace = crear("a", "btn-agregar", "Pedir por WhatsApp");
-    enlace.href = A.enlaceWhatsApp("Hola Alpaqori, quiero pedir el menú del día");
-    enlace.target = "_blank";
-    enlace.rel = "noopener";
-    fila.appendChild(enlace);
+    card.appendChild(selectorVisible("1. Elige tu entrada", "entrada", menu.entradas));
+    card.appendChild(selectorVisible("2. Elige tu segundo", "segundo", menu.segundos));
+    var postre = crear("p", "eleccion-menu__postre");
+    postre.appendChild(crear("strong", "", "Postre: "));
+    postre.appendChild(document.createTextNode(menu.postre.join(", ") + " (incluido)"));
+    card.appendChild(postre);
+    var sumar = crear("button", "btn-agregar", "+ Agregar menú");
+    sumar.type = "button";
+    sumar.addEventListener("click", function (e) {
+      // La variante "entrada + segundo + postre" es el formato que entiende el bot (igual que su menú)
+      var variante = elegido.entrada + " + " + elegido.segundo + " + " + menu.postre.join(", ");
+      agregar({ id: "menu-del-dia", nombre: "Menú del día" }, variante, menu.precio_pen, { boton: sumar, x: e.clientX, y: e.clientY });
+    });
+    fila.appendChild(sumar);
     card.appendChild(fila);
     return card;
   }
@@ -855,7 +857,8 @@
     if (origen && origen.boton) celebrarBoton(origen.boton);
     volarAlCarrito(origen, impactoCarrito);
     cambio();
-    mostrarToast("✓ " + p.nombre + (variante ? " (" + variante + ")" : "") + " agregado");
+    // El menú del día lleva su elección completa como variante: en el aviso basta el nombre
+    mostrarToast("✓ " + p.nombre + (variante && p.id !== "menu-del-dia" ? " (" + variante + ")" : "") + " agregado");
   }
 
   function cambiarCantidad(clave, delta) {
@@ -1186,11 +1189,15 @@
     if (!PEDIDOS) { mostrarToast("No pudimos conectar con cocina. Pide ayuda a un mozo."); return; }
     var nombre = document.getElementById("nombre").value.trim().replace(/\s+/g, " ").slice(0, 50);
     var indicaciones = document.getElementById("indicaciones").value.trim();
-    var notas = [indicaciones].concat(estado.carrito.filter(function (i) { return i.nota; }).map(function (i) {
+    // El menú del día tiene un solo precio: su elección (entrada + segundo) viaja en las notas para cocina
+    var esMenu = function (i) { return i.id === "menu-del-dia"; };
+    var notas = [indicaciones].concat(estado.carrito.filter(esMenu).map(function (i) {
+      return i.cantidad + " × Menú: " + i.variante;
+    })).concat(estado.carrito.filter(function (i) { return i.nota; }).map(function (i) {
       return nombreItem(i) + ": " + i.nota;
     })).filter(Boolean).join(" · ").slice(0, 300);
     var items = estado.carrito.map(function (i) {
-      return { id: i.id, nombre: i.nombre, variante: i.variante || "", precio: i.precio, cantidad: i.cantidad };
+      return { id: i.id, nombre: i.nombre, variante: esMenu(i) ? "" : (i.variante || ""), precio: i.precio, cantidad: i.cantidad };
     });
     var boton = document.getElementById("enviar");
     enviandoCocina = true;
