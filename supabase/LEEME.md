@@ -20,3 +20,15 @@ Falta crear las tablas. Una sola vez, en Supabase > **SQL Editor**, pega y ejecu
 
 Seguridad: en la web solo va la clave *publishable*. La clave secreta (service_role) nunca se pega en ningún archivo.
 Los precios se recalculan en el servidor con la tabla `precios`: el navegador no puede cambiarlos.
+
+## Pedidos de WhatsApp (delivery y recojo) en cocina
+
+1. Ejecuta `05-whatsapp.sql` en el SQL Editor (una sola vez).
+2. En Supabase > Project Settings > API Keys, copia la clave **secret** (empieza con `sb_secret_`).
+3. En `bot-whatsapp/.env` agrega estas dos líneas (nunca en la web ni en GitHub):
+   ```
+   SUPABASE_URL=https://aanmrjntefkdwnhplbbz.supabase.co
+   SUPABASE_SERVICE_KEY=sb_secret_...
+   ```
+4. Reinicia el bot (`npm start` o `npm run api`). Cada pedido que cierre aparece en cocina.html como
+   "Delivery · Nombre" o "Recojo · Nombre", con dirección, pago y teléfono en las notas.

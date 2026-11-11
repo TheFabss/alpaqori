@@ -41,7 +41,9 @@
     const clases = ['coc-tarjeta', minutos >= MINUTOS_TARDE ? 'is-tarde' : '', nuevos.has(p.id) ? 'is-entrando' : ''].join(' ');
     const pagado = p.pago.estado === 'pagado';
     const aviso = p.estado === 'por_confirmar'
-      ? '<p class="coc-verificar">Antes de aceptar, un mozo confirma que hay personas en la mesa.</p>'
+      ? (p.origen === 'whatsapp'
+        ? '<p class="coc-verificar">Pedido por WhatsApp: revisa la dirección y el pago antes de aceptar.</p>'
+        : '<p class="coc-verificar">Antes de aceptar, un mozo confirma que hay personas en la mesa.</p>')
       : '';
     const atras = p.estado === 'por_confirmar'
       ? `<button type="button" class="per-boton per-boton--rechazo" data-rechazar="${p.id}">Rechazar</button>`

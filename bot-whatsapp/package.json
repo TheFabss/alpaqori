@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "node index.js",
+    "start": "node --env-file-if-exists=.env index.js",
     "simular": "node simular.js",
     "probar": "node pruebas.js",
     "api": "node --env-file-if-exists=.env api-oficial.js"

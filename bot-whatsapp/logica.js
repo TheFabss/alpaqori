@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config');
 const memoria = require('./memoria');
+const nube = require('./nube');
 
 /* ---------- Catálogo (el mismo de la web, sale de qcarta) ---------- */
 const CATALOGO = JSON.parse(fs.readFileSync(path.resolve(__dirname, config.RUTA_CATALOGO), 'utf8'));
@@ -400,6 +401,7 @@ function cerrarPedido(estado, r, encabezado) {
     subtotal, delivery, total: subtotal + delivery, porConfirmar: hayPorConfirmar(estado.carrito), ...d
   };
   memoria.registrarPedido(pedido);
+  nube.registrarPedido(pedido);   // también a cocina.html (Supabase); no espera ni bloquea
   memoria.registrarComanda(ticket, {
     tipo: nombreModalidad(d.modalidad),
     modalidad: d.modalidad,
